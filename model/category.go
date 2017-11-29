@@ -6,6 +6,5 @@ import (
 
 type Category struct {
     gorm.Model
-    ID    int   
-    Name  string 
+    Name  string `gorm:"not null"`
 }
