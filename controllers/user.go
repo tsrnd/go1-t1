@@ -3,9 +3,8 @@ import (
     "net/http"
 	"html/template"
 	"github.com/julienschmidt/httprouter"
-	// "goweb1/database"
-	// "goweb1/model"
-	//"fmt"
+	"goweb1/model"
+	"fmt"
 )
 
 type (  
@@ -29,27 +28,19 @@ type Context struct {
 
 
 func (uc UserController) GetUser(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {  
-	// t, _ := template.ParseFiles("views/view.html", "views/layout.html")
-	// db := database.ConnectDB()
-	// model.SetDatabase(db)
-	// var people []model.User
-    // if err := db.Find(&people).Error; err != nil {
-    //    fmt.Println(err)
-    // } else {
-    //     fmt.Println(people)
-	// }
-
+	
+	data,_ := model.GetAll()
+	fmt.Println(data)
 	profiles := Profiles{
 		Profile{"Jack", []string{"snowboarding", "croquet"}},
 		Profile{"Jill", []string{"knitting", "minecraft"}},
 	}
-
+	
     context := Context{"User Profiles", profiles}
 	// layout file must be the first parameter in ParseFiles!
 	templates, err := template.ParseFiles(
-		"goweb1/views/layout.html",
-		"goweb1/views/view.html",
-		
+		"views/layout.html",
+		"views/view.html",
 	)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

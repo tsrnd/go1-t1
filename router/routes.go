@@ -6,12 +6,7 @@ import (
     "net/http"
 )
 
-
-func AllRoute() *httprouter.Router {
-	return routes()
-}
-
-func routes() *httprouter.Router {
+func Routes() *httprouter.Router {
     var uc ctrl.UserController
     var hc ctrl.HomeController
 
