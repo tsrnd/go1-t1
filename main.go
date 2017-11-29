@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-    r := router.AllRoute()
+    r := router.Routes()
     http.ListenAndServe(":8080", r)
 }
 
