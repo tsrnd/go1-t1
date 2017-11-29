@@ -3,12 +3,13 @@ package main
 import (
     "goweb1/database"
 	"goweb1/model"
-	
+	"goweb1/config"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
 
+	config.SetupEnv()
 	db := database.ConnectDB()
 
 	//create table
