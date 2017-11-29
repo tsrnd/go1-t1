@@ -6,8 +6,7 @@ import (
 
 type Order struct {
     gorm.Model
-    ID    int   
-    Total  int 
-    Status  int 
-    UserId  int 
+    Total  int `gorm:"not null"`
+    Status  int `gorm:"not null"`
+    UserId  uint 
 }

@@ -5,10 +5,9 @@ import (
 )
 
 type OrderItem struct {
-    gorm.Model
-    ID    int   
-    Quantity  int 
-    Price  int 
-	ProductId  int 
-	OrderId	int
+    gorm.Model 
+    Quantity  int `gorm:"not null"`
+    Price  int `gorm:"not null"`
+	ProductId  uint `gorm:"not null"`
+	OrderId	uint `gorm:"not null"`
 }

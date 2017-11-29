@@ -5,12 +5,11 @@ import (
 )
 
 type Payment struct {
-    gorm.Model
-    ID    int   
-    Method  string 
-    Status  int 
-	Address  string 
-	Total	int
-	Vat		int
-	OrderId int
+    gorm.Model  
+    Method  string `gorm:"not null"`
+    Status  int `gorm:"not null"`
+	Address  string `gorm:"not null"`
+	Total	int `gorm:"not null"`
+	Vat		int `gorm:"not null"`
+	OrderId uint `gorm:"not null"`
 }

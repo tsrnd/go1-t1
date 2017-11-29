@@ -6,13 +6,12 @@ import (
 )
 
 type User struct {
-    gorm.Model
-    ID    int   
-    Username  string 
-    Fullname  string 
-    Mail  string 
-    Address  string 
-    Password   string   
+    gorm.Model 
+    Username  string `gorm:"not null"`
+    Fullname  string `gorm:"not null"`
+    Email  string `gorm:"not null"`
+    Address  string `gorm:"not null"`
+    Password   string `gorm:"not null"`
 }
 func GetAll() (*User, error) {
     var users User
