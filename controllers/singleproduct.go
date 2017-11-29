@@ -1,29 +1,27 @@
 package controllers
+
 import (
-    "net/http"
 	"html/template"
+	"net/http"
+
 	"github.com/julienschmidt/httprouter"
 )
 
-type (  
-    HomeController struct{}
+type (
+	ProductController struct{}
 )
 
-type Content struct {
-    Title string
-}
+func (hc ProductController) Product(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
-func (hc HomeController) Home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {  
+	context := Content{"Single Product"}
 
-	context := Content{"Home Page"}
-	
 	// layout file must be the first parameter in ParseFiles!
 	templates, err := template.ParseFiles(
 		"views/layout/master.html",
 		"views/layout/header.html",
 		"views/layout/slider.html",
-		"views/home/index.html",
-		"views/layout/footer.html",	
+		"views/product/product.html",
+		"views/layout/footer.html",
 	)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
