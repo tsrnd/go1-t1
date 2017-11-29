@@ -22,12 +22,11 @@ func (hc HomeController) Home(w http.ResponseWriter, r *http.Request, _ httprout
 	
 	// layout file must be the first parameter in ParseFiles!
 	templates, err := template.ParseFiles(
-		"goweb1/views/layout/master.html",
-		"goweb1/views/layout/header.html",
-		"goweb1/views/layout/slider.html",
-		"goweb1/views/home/index.html",
-		"goweb1/views/layout/footer.html",
-		
+		"views/layout/master.html",
+		"views/layout/header.html",
+		"views/layout/slider.html",
+		"views/home/index.html",
+		"views/layout/footer.html",	
 	)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
