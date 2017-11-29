@@ -6,9 +6,12 @@ import (
 
 type User struct {
     gorm.Model
-    ID    int    `json:"id"`
-    Name  string `json:"name"`
-    Age   int    `json:"age"`
+    ID    int   
+    Username  string 
+    Fullname  string 
+    Mail  string 
+    Address  string 
+    Password   string   
 }
 
 func GetAll() (*User, error) {
