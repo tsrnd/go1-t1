@@ -25,8 +25,15 @@ func GetOne(ID int) (*User, error ) {
     return &user, res.Error
 }
 
+func GetUserByUserName(username string)  (*User, error ){
+    var user User
+    res := DB.Select("username, password").Where("username = ?", username).First(&user)
+    return &user, res.Error
+}
+
 func Create(username string, fullname string, email string, address string, password string) (*User, error ) {
 	user := User{Username: username, Fullname: fullname, Email: email, Address: address, Password: password}
     res := DB.Create(&user)
     return &user, res.Error
 }
+

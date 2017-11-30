@@ -3,11 +3,8 @@ package controllers
 import (
 	"html/template"
 	"net/http"
-	"fmt"
 	"goweb1/model"
-
 	"github.com/julienschmidt/httprouter"
-	"golang.org/x/crypto/bcrypt"
 
 )
 
@@ -37,17 +34,11 @@ func (hc *RegisterController) Register(w http.ResponseWriter, r *http.Request, _
 
 func (hc RegisterController) RegisterPost(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	r.ParseForm()
-	fmt.Println(r.FormValue("username"))
 	username := r.FormValue("username")
 	fullname := r.FormValue("fullname")
-	mail :=r.FormValue("mail")
+	mail := r.FormValue("mail")
 	password, _ := HashPassword(r.FormValue("password"))
-	address :=r.FormValue("address")
+	address := r.FormValue("address")
 	model.Create(username, fullname, mail, address, password)
 	http.Redirect(w, r, "/", 301)
-}
-
-func HashPassword(password string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-	return string(bytes), err
 }

@@ -3,8 +3,6 @@ import (
     "net/http"
 	"html/template"
 	"github.com/julienschmidt/httprouter"
-	"goweb1/model"
-	"fmt"
 )
 
 type (  
@@ -26,11 +24,8 @@ type Context struct {
     Profiles Profiles
 }
 
-
 func (uc UserController) GetUser(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {  
 	
-	data,_ := model.GetAll()
-	fmt.Println(data)
 	profiles := Profiles{
 		Profile{"Jack", []string{"snowboarding", "croquet"}},
 		Profile{"Jill", []string{"knitting", "minecraft"}},
