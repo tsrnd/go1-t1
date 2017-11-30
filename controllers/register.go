@@ -40,5 +40,5 @@ func (hc RegisterController) RegisterPost(w http.ResponseWriter, r *http.Request
 	password, _ := HashPassword(r.FormValue("password"))
 	address := r.FormValue("address")
 	model.Create(username, fullname, mail, address, password)
-	http.Redirect(w, r, "/", 301)
+	http.Redirect(w, r, URL_LOGIN, http.StatusMovedPermanently)
 }
