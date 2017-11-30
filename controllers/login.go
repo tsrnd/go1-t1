@@ -13,13 +13,11 @@ type (
 
 func (hc LoginController) Login(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
-	context := Content{"Order"}
 
 	// layout file must be the first parameter in ParseFiles!
 	templates, err := template.ParseFiles(
 		"views/layout/master.html",
 		"views/layout/header.html",
-		"views/layout/slider.html",
 		"views/login/login.html",
 		"views/layout/footer.html",
 	)
@@ -28,7 +26,7 @@ func (hc LoginController) Login(w http.ResponseWriter, r *http.Request, _ httpro
 		return
 	}
 
-	if err := templates.Execute(w, context); err != nil {
+	if err := templates.Execute(w, ""); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
