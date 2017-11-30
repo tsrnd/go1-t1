@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"github.com/julienschmidt/httprouter"
 	"goweb1/model"
+	"goweb1/messages"
 )
 
 type (
@@ -13,6 +14,7 @@ type (
 type Data struct {
 	Errors []interface{}
 }
+
 // Login page
 func (ctrl LoginController) Login(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	session, _ := store.Get(r, "session-id")
@@ -39,16 +41,18 @@ func (ctrl LoginController) Login(w http.ResponseWriter, r *http.Request, _ http
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
+
 // ProcessLogin process login and session
 func (ctrl LoginController) ProcessLogin(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	session, _ := store.Get(r, "session-id")
 	sessionFash, _ := store.Get(r, "session-flash")
 	username := r.PostFormValue("username")
 	password := r.PostFormValue("password")
+	
 	user, _ := model.GetUserByUserName(username)
 
 	if user.Username == "" || !CheckPasswordHash(password, user.Password) {
-		sessionFash.AddFlash("Wrong User Or Password")
+		sessionFash.AddFlash(messages.Error_username_or_password)
 		sessionFash.Save(r, w)
 		http.Redirect(w, r, URL_LOGIN, http.StatusMovedPermanently)
 	}
