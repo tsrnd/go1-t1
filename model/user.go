@@ -1,8 +1,8 @@
 package model
 
 import (
+
     "github.com/jinzhu/gorm"
-    // "fmt"
 )
 
 type User struct {
@@ -22,5 +22,11 @@ func GetAll() (*User, error) {
 func GetOne(ID int) (*User, error ) {
 	var user User
     res := DB.First(&user, ID)
+    return &user, res.Error
+}
+
+func Create(username string, fullname string, email string, address string, password string) (*User, error ) {
+	user := User{Username: username, Fullname: fullname, Email: email, Address: address, Password: password}
+    res := DB.Create(&user)
     return &user, res.Error
 }
