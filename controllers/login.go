@@ -10,11 +10,16 @@ import (
 type (
 	LoginController struct{}
 )
-
+type Data struct {
+	Errors []interface{}
+}
 // Login page
 func (ctrl LoginController) Login(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	session, _ := store.Get(r, "session-id")
-
+	sessionFash, _ := store.Get(r, "session-flash")
+	context := Data{ sessionFash.Flashes()}
+	sessionFash.Options.MaxAge = -1
+	sessionFash.Save(r, w)
 	if session.Values["username"] != nil {
 		http.Redirect(w, r, URL_HOME, http.StatusMovedPermanently)
 	}
@@ -30,18 +35,21 @@ func (ctrl LoginController) Login(w http.ResponseWriter, r *http.Request, _ http
 		return
 	}
 
-	if err := templates.Execute(w, nil); err != nil {
+	if err := templates.Execute(w, context); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
 // ProcessLogin process login and session
 func (ctrl LoginController) ProcessLogin(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	session, _ := store.Get(r, "session-id")
+	sessionFash, _ := store.Get(r, "session-flash")
 	username := r.PostFormValue("username")
 	password := r.PostFormValue("password")
 	user, _ := model.GetUserByUserName(username)
 
 	if user.Username == "" || !CheckPasswordHash(password, user.Password) {
+		sessionFash.AddFlash("Wrong User Or Password")
+		sessionFash.Save(r, w)
 		http.Redirect(w, r, URL_LOGIN, http.StatusMovedPermanently)
 	}
 
