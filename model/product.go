@@ -19,14 +19,16 @@ func GetAllProduct() (AllProducts []Product, erro error) {
     return AllProducts, erro
 }
 
-func GetProductByCategory(category_id int) (products []Product, erro error) {
+func GetProductByCategory(category_id uint, ID int64) (products []Product, erro error) {
     products = []Product{}
-    erro = DB.First(&products, category_id).Error
+    erro = DB.Where("category_id = ?&& id != ?", category_id,ID).Find(&products).Error
     return products, erro
 } 
 
-func GetProductByID(ID int) (product []Product, erro error) {
+func GetProductByID(ID int64) (product []Product, erro error) {
     product = []Product {}
     erro = DB.First(&product, ID).Error
     return product, erro
 }
+
+

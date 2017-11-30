@@ -20,7 +20,7 @@ func Routes() *httprouter.Router {
     r.ServeFiles("/public/*filepath", http.Dir("public"))
     r.GET("/user", uc.GetUser)
     r.GET("/", home_controller.Home)
-    r.GET("/single-product", product_controller.Product)
+    r.GET("/single-product/:id", product_controller.Product)
     r.GET("/order", order_controller.Order)
     r.GET("/login", login_controller.Login)
     r.GET("/register", register_controller.Register)
