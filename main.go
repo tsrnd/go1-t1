@@ -9,7 +9,9 @@ import (
     "goweb1/model"
     "goweb1/config"
     "os"
+   
 )
+
 
 func main() {
     r := router.Routes()
@@ -19,7 +21,7 @@ func main() {
 func init() {
     config.SetupEnv()
     db := database.ConnectDB()
-    model.SetDatabase(db)
+    model.SetDatabase(db)  
     http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 }
 

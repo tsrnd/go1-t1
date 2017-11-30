@@ -2,7 +2,6 @@ package model
 
 import (
     "github.com/jinzhu/gorm"
-    // "fmt"
 )
 
 type User struct {
@@ -22,5 +21,11 @@ func GetAll() (*User, error) {
 func GetOne(ID int) (*User, error ) {
 	var user User
     res := DB.First(&user, ID)
+    return &user, res.Error
+}
+
+func CheckLogin(username string, password string) (*User, error ){
+    var user User
+    res := DB.Select("username").Find(&user, "username = ? and password = ?", username, password)
     return &user, res.Error
 }
