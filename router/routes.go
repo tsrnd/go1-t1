@@ -14,6 +14,7 @@ func Routes() *httprouter.Router {
     var login_controller controllers.LoginController
     var register_controller controllers.RegisterController
     var checkout_controller controllers.CheckoutController
+    var signout_controller controllers.SignOutController
 
 
     r := httprouter.New()
@@ -27,6 +28,7 @@ func Routes() *httprouter.Router {
     r.GET("/checkout", checkout_controller.Checkout)
     r.POST("/login", login_controller.ProcessLogin)
     r.POST("/register", register_controller.RegisterPost)
+    r.GET("/signout", signout_controller.SignOut)
 
     return r
 }
