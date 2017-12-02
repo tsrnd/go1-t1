@@ -10,6 +10,7 @@ var store = sessions.NewCookieStore([]byte("something-very-secret"))
 const (
 	URL_HOME = "/"
 	URL_LOGIN = "/login"
+	URL_NOTFOUND = "/notfound"
 )
 
 
