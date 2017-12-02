@@ -1,6 +1,5 @@
 package controllers
 import (
-	// "fmt"
 	"goweb1/model"
 	"strconv"
     "net/http"
@@ -17,15 +16,15 @@ func (uc UserController) GetUser(w http.ResponseWriter, r *http.Request, ps http
 	id := ps.ByName("id")
 	ids, err := strconv.ParseInt(id, 10, 64)
 	user, _ := model.GetUserByID(ids)
-	if err != nil || len(user) == 0 {
+	if (err != nil )|| (len(user) == 0) {
 		http.Redirect(w, r, URL_HOME, http.StatusMovedPermanently)
+	} else {
+		session, _ := store.Get(r, "session-id")
+		if session.Values["username"] == nil ||  session.Values["id"] != user[0].ID {
+			http.Redirect(w, r, URL_NOTFOUND, http.StatusMovedPermanently)
+		}
 	}
-
-	session, _ := store.Get(r, "session-id")
-	if session.Values["username"] == nil ||  session.Values["id"] != user[0].ID {
-		http.Redirect(w, r, URL_HOME, http.StatusMovedPermanently)
-	}
-
+	
 	// layout file must be the first parameter in ParseFiles!
 	templates, err := template.ParseFiles(
 		"views/layout/master.html",	
@@ -53,12 +52,13 @@ func (uc UserController) UpdateUser(w http.ResponseWriter, r *http.Request, ps h
 	new_pasword := r.FormValue("new-pasword")
 	fullname := r.FormValue("fullname")
 	address := r.FormValue("address")
-	password,_ := HashPassword("new_password")
-		
-	if !CheckPasswordHash(old_pasword,user[0].Password) || new_pasword  ==""  {
+	password,_ := HashPassword(new_pasword)
+	
+	check := CheckPasswordHash(old_pasword,user[0].Password)
+	if check == false || new_pasword  == ""  {
 		http.Redirect(w, r, "/user/"+id, http.StatusMovedPermanently)
+	} else {
+		model.UpdateUser(ids, fullname, address, password)
+		http.Redirect(w, r, "/", http.StatusMovedPermanently)
 	}
-	model.UpdateUser(ids, fullname, address, password)
-	http.Redirect(w, r, "/", http.StatusMovedPermanently)
-
 }
