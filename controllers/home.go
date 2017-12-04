@@ -11,13 +11,8 @@ type (
 )
 
 func (hc HomeController) Home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {  
-	products, _ := model.GetAllProduct()
-	categories, _ := model.GetAllCategory()
+	data, _ := model.GetAllProduct()
 
-	data := map[string]interface{}{
-		"Products": products,
-		"Categories":  categories,
-	}
 	// layout file must be the first parameter in ParseFiles!
 	templates, err := template.ParseFiles(
 		"views/layout/master.html",
