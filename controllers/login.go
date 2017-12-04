@@ -1,11 +1,13 @@
 package controllers
 
 import (
+	"fmt"
+	"goweb1/messages"
+	"goweb1/model"
 	"html/template"
 	"net/http"
+
 	"github.com/julienschmidt/httprouter"
-	"goweb1/model"
-	"goweb1/messages"
 )
 
 type (
@@ -19,11 +21,19 @@ type Data struct {
 func (ctrl LoginController) Login(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	session, _ := store.Get(r, "session-id")
 	sessionFash, _ := store.Get(r, "session-flash")
-	context := Data{ sessionFash.Flashes()}
+	context := Data{sessionFash.Flashes()}
 	sessionFash.Options.MaxAge = -1
 	sessionFash.Save(r, w)
 	if session.Values["username"] != nil {
 		http.Redirect(w, r, URL_HOME, http.StatusMovedPermanently)
+	}
+	username := session.Values["username"]
+	fmt.Println(username)
+	cats, _ := model.GetAllCategory()
+	ldata := map[string]interface{}{
+		"cats":    cats,
+		"name":    username,
+		"context": context,
 	}
 	// layout file must be the first parameter in ParseFiles!
 	templates, err := template.ParseFiles(
@@ -37,7 +47,7 @@ func (ctrl LoginController) Login(w http.ResponseWriter, r *http.Request, _ http
 		return
 	}
 
-	if err := templates.Execute(w, context); err != nil {
+	if err := templates.Execute(w, ldata); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -48,7 +58,7 @@ func (ctrl LoginController) ProcessLogin(w http.ResponseWriter, r *http.Request,
 	sessionFash, _ := store.Get(r, "session-flash")
 	username := r.PostFormValue("username")
 	password := r.PostFormValue("password")
-	
+
 	user, _ := model.GetUserByUserName(username)
 
 	if user.Username == "" || !CheckPasswordHash(password, user.Password) {
