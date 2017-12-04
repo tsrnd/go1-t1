@@ -15,7 +15,7 @@ func Routes() *httprouter.Router {
     var register_controller controllers.RegisterController
     var checkout_controller controllers.CheckoutController
     var url_notfound controllers.NotFoundController
-    var signout_controller controllers.SignOutController
+    var logout_controller controllers.LoginController
 
 
     r := httprouter.New()
@@ -31,7 +31,7 @@ func Routes() *httprouter.Router {
     r.POST("/login", login_controller.ProcessLogin)
     r.POST("/register", register_controller.RegisterPost)
     r.GET("/notfound", url_notfound.NotFound)
-    r.GET("/signout", signout_controller.SignOut)
+    r.GET("/logout", logout_controller.LogOut)
 
     return r
 }
