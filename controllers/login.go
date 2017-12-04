@@ -62,3 +62,11 @@ func (ctrl LoginController) ProcessLogin(w http.ResponseWriter, r *http.Request,
 	session.Save(r, w)
 	http.Redirect(w, r, URL_HOME, http.StatusMovedPermanently)
 }
+
+func (hc *LoginController) LogOut(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	session, _ := store.Get(r, "session-id")
+	session.Values["username"] = nil
+	session.Options.MaxAge = -1
+	session.Save(r, w)
+	http.Redirect(w, r, URL_HOME, http.StatusMovedPermanently)
+}
