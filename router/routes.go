@@ -14,12 +14,14 @@ func Routes() *httprouter.Router {
     var login_controller controllers.LoginController
     var register_controller controllers.RegisterController
     var checkout_controller controllers.CheckoutController
+    var url_notfound controllers.NotFoundController
     var signout_controller controllers.SignOutController
 
 
     r := httprouter.New()
     r.ServeFiles("/public/*filepath", http.Dir("public"))
-    r.GET("/user", uc.GetUser)
+    r.GET("/user/:id", uc.GetUser)
+    r.POST("/user/:id", uc.UpdateUser)
     r.GET("/", home_controller.Home)
     r.GET("/single-product/:id", product_controller.Product)
     r.GET("/order", order_controller.Order)
@@ -28,6 +30,7 @@ func Routes() *httprouter.Router {
     r.GET("/checkout", checkout_controller.Checkout)
     r.POST("/login", login_controller.ProcessLogin)
     r.POST("/register", register_controller.RegisterPost)
+    r.GET("/notfound", url_notfound.NotFound)
     r.GET("/signout", signout_controller.SignOut)
 
     return r

@@ -19,15 +19,15 @@ func GetAll() (*User, error) {
     return &users, res.Error
 }
 
-func GetOne(ID int) (*User, error ) {
-	var user User
-    res := DB.First(&user, ID)
-    return &user, res.Error
+func GetUserByID(ID int64) (user []User, err error) {
+    user = []User {}
+    err = DB.First(&user, ID).Error
+    return user, err
 }
 
 func GetUserByUserName(username string)  (*User, error ){
     var user User
-    res := DB.Select("username, password").Where("username = ?", username).First(&user)
+    res := DB.Select("id,username, password").Where("username = ?", username).First(&user)
     return &user, res.Error
 }
 
@@ -37,3 +37,12 @@ func Create(username string, fullname string, email string, address string, pass
     return &user, res.Error
 }
 
+func UpdateUser(ID int64, fullname string,  address string, password string) (*User, error) {
+    var user User
+    DB.First(&user, ID)
+    user.Fullname = fullname
+    user.Password = password
+    user.Address = address
+    res := DB.Save(&user)
+    return &user, res.Error
+}

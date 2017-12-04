@@ -58,6 +58,7 @@ func (ctrl LoginController) ProcessLogin(w http.ResponseWriter, r *http.Request,
 	}
 
 	session.Values["username"] = user.Username
+	session.Values["id"] = user.ID
 	session.Save(r, w)
 	http.Redirect(w, r, URL_HOME, http.StatusMovedPermanently)
 }
