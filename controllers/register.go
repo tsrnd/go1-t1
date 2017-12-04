@@ -1,11 +1,12 @@
 package controllers
 
 import (
+	"fmt"
+	"goweb1/model"
 	"html/template"
 	"net/http"
-	"goweb1/model"
-	"github.com/julienschmidt/httprouter"
 
+	"github.com/julienschmidt/httprouter"
 )
 
 type (
@@ -13,7 +14,14 @@ type (
 )
 
 func (hc *RegisterController) Register(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-
+	session, _ := store.Get(r, "session-id")
+	username := session.Values["username"]
+	fmt.Println(username)
+	cats, _ := model.GetAllCategory()
+	rdata := map[string]interface{}{
+		"cats": cats,
+		"name": username,
+	}
 
 	// layout file must be the first parameter in ParseFiles!
 	templates, err := template.ParseFiles(
@@ -27,7 +35,7 @@ func (hc *RegisterController) Register(w http.ResponseWriter, r *http.Request, _
 		return
 	}
 
-	if err := templates.Execute(w, ""); err != nil {
+	if err := templates.Execute(w, rdata); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
