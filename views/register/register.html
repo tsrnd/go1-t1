@@ -36,6 +36,14 @@
                                 </div>
                             </form>
                         </div>
+                        <br/>
+                        <div class="row">
+                            {{range .Errors}}
+                            <div class="alert alert-danger">
+                                {{.}}       
+                            </div>
+                        {{end}}
+                    </div>
                     </div>
                 </div>
             </div>
