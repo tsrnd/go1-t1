@@ -25,6 +25,7 @@ func Routes() *httprouter.Router {
     r.GET("/", home_controller.Home)
     r.GET("/single-product/:id", product_controller.Product)
     r.GET("/order", order_controller.Order)
+    r.POST("/checkout", order_controller.SaveOrder)
     r.GET("/login", login_controller.Login)
     r.GET("/register", register_controller.Register)
     r.GET("/checkout", checkout_controller.Checkout)
