@@ -6,7 +6,7 @@ import (
 	"goweb1/model"
 	"html/template"
 	"net/http"
-
+	"github.com/gorilla/csrf"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -34,6 +34,8 @@ func (ctrl LoginController) Login(w http.ResponseWriter, r *http.Request, _ http
 		"cats":    cats,
 		"name":    username,
 		"context": context,
+		csrf.TemplateTag: csrf.TemplateField(r),
+
 	}
 	// layout file must be the first parameter in ParseFiles!
 	templates, err := template.ParseFiles(
