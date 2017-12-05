@@ -2,11 +2,12 @@ package controllers
 
 import (
 	"fmt"
-	"goweb1/model"
 	"html/template"
 	"net/http"
-
+	"goweb1/model"
 	"github.com/julienschmidt/httprouter"
+	"html"
+	"github.com/gorilla/csrf"
 )
 
 type (
@@ -14,15 +15,20 @@ type (
 )
 
 func (hc *RegisterController) Register(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+
+	sessionFash, _ := store.Get(r, "session-flash")	
+	message := CoverInterfaceToString(sessionFash.Flashes())
+	sessionFash.Options.MaxAge = -1
+	sessionFash.Save(r, w)
 	session, _ := store.Get(r, "session-id")
 	username := session.Values["username"]
-	fmt.Println(username)
 	cats, _ := model.GetAllCategory()
 	rdata := map[string]interface{}{
 		"cats": cats,
 		"name": username,
+		"sessionFlash" : message,
+		csrf.TemplateTag: csrf.TemplateField(r),
 	}
-
 	// layout file must be the first parameter in ParseFiles!
 	templates, err := template.ParseFiles(
 		"views/layout/master.html",
@@ -34,7 +40,6 @@ func (hc *RegisterController) Register(w http.ResponseWriter, r *http.Request, _
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 	if err := templates.Execute(w, rdata); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
@@ -43,10 +48,26 @@ func (hc *RegisterController) Register(w http.ResponseWriter, r *http.Request, _
 func (hc RegisterController) RegisterPost(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	r.ParseForm()
 	username := r.FormValue("username")
-	fullname := r.FormValue("fullname")
+	fullname := html.EscapeString(r.FormValue("fullname"))
 	mail := r.FormValue("mail")
 	password, _ := HashPassword(r.FormValue("password"))
-	address := r.FormValue("address")
-	model.Create(username, fullname, mail, address, password)
+	address := html.EscapeString(r.FormValue("address"))
+	v := new (Validator)
+	if !v.ValidateUsername(username) || 
+	   !v.ValidateUsername(username) || 
+	   !v.ValidateEmail(mail) || 
+	   !v.ValidatePassword(password) || 
+	    v.ExistsEmail(mail) ||
+	    v.ExistsUserName(username) {
+		SessionFlash(v.err, w, r)
+		http.Redirect(w, r, URL_REGISTER, http.StatusMovedPermanently)
+		return
+	}
+	_, err := model.Create(username, fullname, mail, address, password)
+	if err != nil {
+		fmt.Println(err.Error())
+		http.Redirect(w, r, URL_REGISTER, http.StatusMovedPermanently)
+		return
+	}
 	http.Redirect(w, r, URL_LOGIN, http.StatusMovedPermanently)
 }

@@ -12,7 +12,10 @@ type User struct {
     Email  string `gorm:"not null"`
     Address  string `gorm:"not null"`
     Password   string `gorm:"not null"`
+    Orders []Order
 }
+
+
 func GetAll() (*User, error) {
     var users User
     res := DB.Find(&users)
@@ -28,6 +31,12 @@ func GetUserByID(ID int64) (user []User, err error) {
 func GetUserByUserName(username string)  (*User, error ){
     var user User
     res := DB.Select("id,username, password").Where("username = ?", username).First(&user)
+    return &user, res.Error
+}
+
+func GetUserByEmail(email string)  (*User, error ){
+    var user User
+    res := DB.Select("email").Where("email = ?", email).First(&user)
     return &user, res.Error
 }
 

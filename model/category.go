@@ -7,6 +7,7 @@ import (
 type Category struct {
     gorm.Model
     Name  string `gorm:"not null"`
+    Products   []Product // Category has many product
 }
 
 func GetAllCategory() (AllCategory []Category, erro error) {
