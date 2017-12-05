@@ -41,3 +41,8 @@ func CoverInterfaceToString(inter []interface{}) []string{
 	}
 	return s
 }
+
+func AuthIsLogin(r *http.Request) bool {
+	session, _ := store.Get(r, "session-id")
+	return session.Values["username"] != nil
+}
