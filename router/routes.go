@@ -4,20 +4,19 @@ import (
     "github.com/julienschmidt/httprouter"
     controllers "goweb1/controllers"
     "net/http"
+    "github.com/urfave/negroni"
+   middleware "goweb1/middleware"
 )
+var uc controllers.UserController
+var home_controller controllers.HomeController
+var product_controller controllers.ProductController
+var order_controller controllers.OrderController
+var login_controller controllers.LoginController
+var register_controller controllers.RegisterController
+var checkout_controller controllers.CheckoutController
+var url_notfound controllers.NotFoundController
 
 func Routes() *httprouter.Router {
-    var uc controllers.UserController
-    var home_controller controllers.HomeController
-    var product_controller controllers.ProductController
-    var order_controller controllers.OrderController
-    var login_controller controllers.LoginController
-    var register_controller controllers.RegisterController
-    var checkout_controller controllers.CheckoutController
-    var url_notfound controllers.NotFoundController
-    var logout_controller controllers.LoginController
-
-
     r := httprouter.New()
     r.ServeFiles("/public/*filepath", http.Dir("public"))
     r.GET("/user/:id", uc.GetUser)
@@ -31,7 +30,14 @@ func Routes() *httprouter.Router {
     r.POST("/login", login_controller.ProcessLogin)
     r.POST("/register", register_controller.RegisterPost)
     r.GET("/notfound", url_notfound.NotFound)
-    r.GET("/logout", logout_controller.LogOut)
+
+    nAuth := negroni.New()
+	nAuth.Use(negroni.HandlerFunc(middleware.Auth))
+    nAuth.UseHandlerFunc(login_controller.LogOut)
+	r.Handler("GET", "/logout", nAuth)
 
     return r
 }
+
+
+
