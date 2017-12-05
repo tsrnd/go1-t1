@@ -55,16 +55,22 @@ func (ctrl LoginController) Login(w http.ResponseWriter, r *http.Request, _ http
 // ProcessLogin process login and session
 func (ctrl LoginController) ProcessLogin(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	session, _ := store.Get(r, "session-id")
-	sessionFash, _ := store.Get(r, "session-flash")
 	username := r.PostFormValue("username")
 	password := r.PostFormValue("password")
 
 	user, _ := model.GetUserByUserName(username)
+	v := new (Validator)
+
+	if !v.ValidateUsername(username) {
+		SessionFlash(v.err, w, r)
+		http.Redirect(w, r, URL_LOGIN, http.StatusMovedPermanently)
+		return
+	}
 
 	if user.Username == "" || !CheckPasswordHash(password, user.Password) {
-		sessionFash.AddFlash(messages.Error_username_or_password)
-		sessionFash.Save(r, w)
+		SessionFlash(messages.Error_username_or_password, w, r)
 		http.Redirect(w, r, URL_LOGIN, http.StatusMovedPermanently)
+		return
 	}
 
 	session.Values["username"] = user.Username
