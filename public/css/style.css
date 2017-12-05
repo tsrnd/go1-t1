@@ -402,7 +402,7 @@ body {
     float: none;
 }
 .btn-edit {
-    background-image: url("img/cart/btn_edit.gif");
+    background-image: url("/public/img/cart/btn_edit.gif");
     background-repeat: no-repeat;
     cursor: pointer;
     height: 11px;
@@ -412,7 +412,7 @@ body {
     top: 4px;
 }
 .btn-remove {
-    background-image: url("img/cart/btn_remove.png");
+    background-image: url("/public/img/cart/btn_remove.png");
     background-repeat: no-repeat;
     cursor: pointer;
     height: 13px;
