@@ -9,12 +9,13 @@ import (
     "goweb1/model"
     "goweb1/config"
     "os"
+    "github.com/gorilla/csrf"
 )
 
 
 func main() {
     r := router.Routes()
-    http.ListenAndServe(os.Getenv("SERVER_PORT"), r)
+    http.ListenAndServe(os.Getenv("SERVER_PORT"), csrf.Protect([]byte("32-byte-long-auth-key"), csrf.Secure(false))(r))
 }
 
 func init() {

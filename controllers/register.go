@@ -7,7 +7,7 @@ import (
 	"goweb1/model"
 	"github.com/julienschmidt/httprouter"
 	"html"
-	//"reflect"
+	"github.com/gorilla/csrf"
 )
 
 type (
@@ -27,6 +27,7 @@ func (hc *RegisterController) Register(w http.ResponseWriter, r *http.Request, _
 		"cats": cats,
 		"name": username,
 		"sessionFlash" : message,
+		csrf.TemplateTag: csrf.TemplateField(r),
 	}
 	// layout file must be the first parameter in ParseFiles!
 	templates, err := template.ParseFiles(
