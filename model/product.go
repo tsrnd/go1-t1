@@ -11,8 +11,12 @@ type Product struct {
     Image  string `gorm:"not null"`
     Size  string `gorm:"not null"`
 	Color   string `gorm:"not null"`
-	CategoryId uint `gorm:"not null"`
+    CategoryId uint `gorm:"not null"`
+    Category Category // Product belong to Category
+    OrderItems []OrderItem // Product has many OrderItem
+
 }
+
 func GetAllProduct() (AllProducts []Product, erro error) {
     AllProducts = []Product{}
 	erro = DB.Find(&AllProducts).Error
