@@ -1,12 +1,13 @@
 package controllers
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 	"goweb1/model"
 	"github.com/julienschmidt/httprouter"
 	"html"
-	"fmt"
+	//"reflect"
 )
 
 type (
@@ -16,9 +17,17 @@ type (
 func (hc *RegisterController) Register(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	sessionFash, _ := store.Get(r, "session-flash")	
-	context := Data{ sessionFash.Flashes(),}
+	message := CoverInterfaceToString(sessionFash.Flashes())
 	sessionFash.Options.MaxAge = -1
 	sessionFash.Save(r, w)
+	session, _ := store.Get(r, "session-id")
+	username := session.Values["username"]
+	cats, _ := model.GetAllCategory()
+	rdata := map[string]interface{}{
+		"cats": cats,
+		"name": username,
+		"sessionFlash" : message,
+	}
 	// layout file must be the first parameter in ParseFiles!
 	templates, err := template.ParseFiles(
 		"views/layout/master.html",
@@ -30,7 +39,7 @@ func (hc *RegisterController) Register(w http.ResponseWriter, r *http.Request, _
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	if err := templates.Execute(w, context); err != nil {
+	if err := templates.Execute(w, rdata); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
@@ -53,7 +62,6 @@ func (hc RegisterController) RegisterPost(w http.ResponseWriter, r *http.Request
 		http.Redirect(w, r, URL_REGISTER, http.StatusMovedPermanently)
 		return
 	}
-
 	_, err := model.Create(username, fullname, mail, address, password)
 	if err != nil {
 		fmt.Println(err.Error())

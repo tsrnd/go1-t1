@@ -4,6 +4,7 @@ import (
 	"github.com/gorilla/sessions"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
+	"fmt"
 )
 
 var store = sessions.NewCookieStore([]byte("something-very-secret"))
@@ -30,4 +31,13 @@ func SessionFlash(err string, w http.ResponseWriter, r *http.Request) {
 	sessionFash, _ := store.Get(r, "session-flash")
 	sessionFash.AddFlash(err)
 	sessionFash.Save(r, w)
+}
+
+func CoverInterfaceToString(inter []interface{}) []string{
+
+	s := make([]string, len(inter))
+	for i, v := range inter {
+		s[i] = fmt.Sprint(v)
+	}
+	return s
 }

@@ -1,5 +1,6 @@
 {{define "title"}} {{end}}
 {{define "content"}}
+
 <div class="shopping-cart">
     <div class="container">
         <div class="row">
@@ -37,13 +38,15 @@
                             </form>
                         </div>
                         <br/>
-                        <div class="row">
-                            {{range .Errors}}
-                            <div class="alert alert-danger">
-                                {{.}}       
-                            </div>
+                    <br/>
+                    <div class="row">
+                        {{if .sessionFlash}}
+                        <div class="alert alert-danger">
+                            {{index .sessionFlash 0}}       
+                        </div>
                         {{end}}
                     </div>
+                    
                     </div>
                 </div>
             </div>
