@@ -12,4 +12,5 @@ type Payment struct {
 	Total	int `gorm:"not null"`
 	Vat		int `gorm:"not null"`
 	OrderId uint `gorm:"not null"`
+	Orders []Order 
 }

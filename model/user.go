@@ -12,6 +12,7 @@ type User struct {
     Email  string `gorm:"not null"`
     Address  string `gorm:"not null"`
     Password   string `gorm:"not null"`
+    Orders []Order
 }
 
 
