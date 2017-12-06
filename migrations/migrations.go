@@ -4,7 +4,7 @@ import (
     "goweb1/database"
 	"goweb1/model"
 	"goweb1/config"
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 func main() {
@@ -35,7 +35,7 @@ func main() {
 	db.Model(model.Order{}).AddIndex("idx_user_id", "user_id")
 	db.Model(model.OrderItem{}).AddIndex("idx_product_id", "product_id")
 	db.Model(model.OrderItem{}).AddIndex("idx_order_id", "order_id")
-	db.Model(model.Payment{}).AddIndex("idx_order_id", "order_id")
+	db.Model(model.Payment{}).AddIndex("idx_payment_order_id", "order_id")
 
 	//Add index unique
 	db.Model(model.User{}).AddUniqueIndex("idx_user_name", "username")
