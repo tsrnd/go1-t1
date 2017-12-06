@@ -5,6 +5,7 @@ import (
     "net/http"
 	"html/template"
 	"github.com/julienschmidt/httprouter"
+	"github.com/gorilla/csrf"
 )
 
 type (  
@@ -24,6 +25,16 @@ func (uc UserController) GetUser(w http.ResponseWriter, r *http.Request, ps http
 			http.Redirect(w, r, URL_NOTFOUND, http.StatusMovedPermanently)
 		}
 	}
+	session, _ := store.Get(r, "session-id")
+	username := session.Values["username"]
+	cats, _ := model.GetAllCategory()
+	
+	udata := map[string]interface{}{
+	"cats":         cats,
+	"name":       	username,
+	"user":			user,
+	csrf.TemplateTag: csrf.TemplateField(r),
+	}
 	
 	// layout file must be the first parameter in ParseFiles!
 	templates, err := template.ParseFiles(
@@ -37,7 +48,7 @@ func (uc UserController) GetUser(w http.ResponseWriter, r *http.Request, ps http
 		return
 	}
 
-	if err := templates.Execute(w, user); err != nil {
+	if err := templates.Execute(w, udata); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }

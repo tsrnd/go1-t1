@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"goweb1/messages"
 	"goweb1/model"
 	"html/template"
@@ -28,7 +27,6 @@ func (ctrl LoginController) Login(w http.ResponseWriter, r *http.Request, _ http
 		http.Redirect(w, r, URL_HOME, http.StatusMovedPermanently)
 	}
 	username := session.Values["username"]
-	fmt.Println(username)
 	cats, _ := model.GetAllCategory()
 	ldata := map[string]interface{}{
 		"cats":    cats,

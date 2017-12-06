@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"goweb1/model"
 	"html/template"
 	"net/http"
@@ -22,7 +21,6 @@ func (hc ProductController) Product(w http.ResponseWriter, r *http.Request, ps h
 	ProductRelated, _ := model.GetProductByCategory(product[0].CategoryId, ids)
 	session, _ := store.Get(r, "session-id")
 	username := session.Values["username"]
-	fmt.Println(username)
 	cats, _ := model.GetAllCategory()
 	data := map[string]interface{}{
 		"Product":        product,
