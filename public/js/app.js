@@ -49,4 +49,8 @@ $(document).ready(function(){
         shoppingCart.removeItemFromCartAll(name);
         displayCart();
     });
+    $(".check-button").click(function(){
+        shoppingCart.clearCart();
+        displayCart();
+    });
 });
