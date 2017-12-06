@@ -17,12 +17,11 @@ func (order_controller OrderController) Order(w http.ResponseWriter, r *http.Req
 
 	session, _ := store.Get(r, "session-id")
 	username := session.Values["username"]
-	itemorders, _ := model.GetAllOrderItems()
 	cats, _ := model.GetAllCategory()
 	data := map[string]interface{}{
 		"cats":           cats,
 		"name":           username,
-		"Item":           itemorders,
+	
 		csrf.TemplateTag: csrf.TemplateField(r),
 	}
 	// layout file must be the first parameter in ParseFiles!

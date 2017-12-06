@@ -1,7 +1,7 @@
 package model
 
 import (
-    "github.com/jinzhu/gorm"
+	"github.com/jinzhu/gorm"
 )
 
 type Order struct {
@@ -12,6 +12,12 @@ type Order struct {
     OrderItems []OrderItem // Order hasmany OrderItem
     Payments []Payment 
     User User // Order belong to User
+}
+
+func GetOrderByID(ID uint) (*Order, error) {
+	var order Order
+	erro := DB.Select("id,total,status").Where("user_id = ?", ID).First(&order)
+	return &order, erro.Error
 }
 
 func SaveOrder(total int64, user_id uint) (*Order, error ) {
