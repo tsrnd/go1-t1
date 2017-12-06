@@ -103,8 +103,12 @@
                         <div class="single-cart">
                             <div class="cart-plus-minus">
                                 <label>Qty: </label>
-                                <input class="cart-plus-minus-box" type="text" name="qtybutton" value="0">
+                                <input class="cart-plus-minus-box quantity" type="text" name="qtybutton" value="0">
                             </div>
+                                <input class="id" type="hidden" value="{{.ID}}"> </input>
+                                <input class="name" type="hidden" value="{{.Name}}"> </input>
+                                <input class="image" type="hidden" value="{{.Image}}"> </input>
+                                <input class="price" type="hidden" value="{{.Price}}"> </input>
                             <button class="cart-btn">Add to cart</button>
                         </div>
                     </div>

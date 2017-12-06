@@ -31,39 +31,10 @@
                                         <th class="remove-icon"></th>
                                     </tr>
                                 </thead>
-                                <tbody class="text-center">
-                                   {{range $key , $value := .Item}}
+                                <tbody class="text-center" id="order-table">
 
-                                    <tr>
-                                        <td class="cart-item-img">
-                                            <a href="single-product.html">
-                                                <img src="/public/img/cart/3.png" alt="">
-                                            </a>
-                                        </td>
-                                        <input type="hidden" name="productID[{{$key}}]" value="{{.ProductId}}">
-                                        <td class="cart-product-name">
-                                            <a href="single-product.html">Cras neque metus</a>
-                                        </td>
-                                        <td class="unit-price">
-                                            <span>{{.Price}}</span>
-                                            <input type="hidden" value="{{.Price}}" name="unit-price[{{$key}}]">
-                                        </td>
-                                        <td class="quantity">
-                                            <span>{{.Quantity}}</span>
-                                            <input type="hidden" value="{{.Quantity}}" name="quantity[{{$key}}]">
-                                            
-                                        </td>
-                                        <td class="subtotal">
-                                            <span>{{.Price}}</span>
-                                            <input type="hidden" value="{{.Price}}" name="subtotal[{{$key}}]">
-                                        </td>
-                                        <td class="remove-icon">
-                                            <a href="#">
-                                                <img src="/public/img/cart/btn_remove.png" alt="">
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    {{end}}
+
+
                                 </tbody>
                             </table>
 
@@ -77,7 +48,7 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="totals">
-                        <h3>Sub Total <span>$500</span></h3>
+                        <h3>Sub Total <span class="order_subtotoal"></span></h3>
                         <input type="hidden" value="500" name="totals">
                       
                         <div class="shopping-button">
@@ -96,4 +67,5 @@
     </div>
 </div>
 <!-- cart item area end -->
+
 {{end}}
