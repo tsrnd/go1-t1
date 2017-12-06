@@ -67,6 +67,6 @@ func (order_controller OrderController) SaveOrder(w http.ResponseWriter, r *http
 	}
 	ids := strconv.Itoa(int(order_id))
 	
-	http.Redirect(w, r, "/checkout/"+ids, http.StatusMovedPermanently)
+	http.Redirect(w, r, URL_CHECKOUT+"/"+ids, http.StatusMovedPermanently)
 
 }

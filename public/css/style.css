@@ -441,7 +441,7 @@ body {
 /*----------------------------------------*/
 
 .mainmenu-area.home2.bg-color-tr.product-items {
-    background-color: transparent;
+    background-color: rgba(41, 37, 37, 0.57);
 }
 .mainmenu-area {
     position: relative;

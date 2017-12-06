@@ -70,6 +70,6 @@ func (uc UserController) UpdateUser(w http.ResponseWriter, r *http.Request, ps h
 		http.Redirect(w, r, "/user/"+id, http.StatusMovedPermanently)
 	} else {
 		model.UpdateUser(ids, fullname, address, password)
-		http.Redirect(w, r, "/", http.StatusMovedPermanently)
+		http.Redirect(w, r, URL_HOME, http.StatusMovedPermanently)
 	}
 }
