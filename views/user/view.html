@@ -23,7 +23,7 @@
                         <div class="login-text">
                             <h2>Detail User & Update</h2>
                         </div>
-                      {{range $key , $value := .}}
+                       {{range $key , $value := .user}} 
                         <div class="login-form">
                             <form action="/user/{{.ID}}" method="post">
                                 <input type="text" name="username" placeholder="{{.Username}}" readonly style="background-color:#a7a3a3">
@@ -32,13 +32,15 @@
                                 <input name="mail" placeholder="{{.Email}}" type="email" readonly style="background-color:#a7a3a3">
                                 <input name="fullname" placeholder="{{.Fullname}}" type="text" value="{{.Fullname}}">
                                 <input name="address" placeholder="{{.Address}}" type="text" value="{{.Address}}">
+                                   {{end}}
+                                    {{ .csrfField }}
                                 <div class="button-box" style="text-align:center">
                                     <button type="reset" class="default-btn">Cancel</button>
                                     <button type="submit" class="default-btn">Update</button>
                                 </div>
                             </form>
                         </div>
-                         {{end}}
+                        
                     </div>
                 </div>
             </div>
