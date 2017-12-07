@@ -22,16 +22,17 @@ func init() {
 func (m *CreateUsersTable_20171206_140924) Up() {
 	m.SQL(`CREATE TABLE users(  
 			id SERIAL PRIMARY KEY,
-			username VARCHAR NOT NULL,
+			username VARCHAR(255) NOT NULL,
 			fullname VARCHAR(255) NOT NULL,
 			email VARCHAR(255) NOT NULL,
 			address VARCHAR(255),
 			password VARCHAR(255) NOT NULL,
-			created_at timestamp NOT NULL,
-			updated_at timestamp NOT NULL,
-			deleted_at timestamp NOT NULL
+			created_at timestamp with time zone,
+			updated_at timestamp with time zone,
+			deleted_at timestamp with time zone
 		  );`)
 }
+
 
 // Reverse the migrations
 func (m *CreateUsersTable_20171206_140924) Down() {

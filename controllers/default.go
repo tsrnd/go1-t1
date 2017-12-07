@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
+	"goweb1/models"
 )
 
 type MainController struct {
