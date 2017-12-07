@@ -4,15 +4,16 @@ import (
 	"github.com/astaxie/beego"
 )
 
-type MainController struct {
+// OrderController operations for Order
+type OrderController struct {
 	beego.Controller
 }
 
-func (this *MainController) Home() {
-	this.InitFrontEndTemplate("frontend/home.tpl")
+func (this *OrderController) Order() {
+	this.InitFrontEndTemplate("frontend/order.tpl")
 }
 
-func (this *MainController) InitFrontEndTemplate(TplName string) {
+func (this *OrderController) InitFrontEndTemplate(TplName string) {
 	this.Layout = "frontend/base/layout.tpl"
 	this.TplName = TplName
 	this.LayoutSections = make(map[string]string)

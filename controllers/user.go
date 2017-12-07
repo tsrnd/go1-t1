@@ -4,15 +4,20 @@ import (
 	"github.com/astaxie/beego"
 )
 
-type MainController struct {
+// UserController operations for User
+type UserController struct {
 	beego.Controller
 }
 
-func (this *MainController) Home() {
-	this.InitFrontEndTemplate("frontend/home.tpl")
+func (this *UserController) Register() {
+	this.InitFrontEndTemplate("frontend/register.tpl")
 }
 
-func (this *MainController) InitFrontEndTemplate(TplName string) {
+func (this *UserController) Login() {
+	this.InitFrontEndTemplate("frontend/login.tpl")
+}
+
+func (this *UserController) InitFrontEndTemplate(TplName string) {
 	this.Layout = "frontend/base/layout.tpl"
 	this.TplName = TplName
 	this.LayoutSections = make(map[string]string)
