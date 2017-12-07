@@ -22,6 +22,41 @@ var routes = Routes{
 			"get:Home",
 		},
 	},
+	Route{
+		"/login",
+		&controllers.UserController{},
+		[]string{
+			"get:Login",
+		},
+	},
+	Route{
+		"/register",
+		&controllers.UserController{},
+		[]string{
+			"get:Register",
+		},
+	},
+	Route{
+		"/order",
+		&controllers.OrderController{},
+		[]string{
+			"get:Order",
+		},
+	},
+	Route{
+		"/checkout",
+		&controllers.CheckoutController{},
+		[]string{
+			"get:Checkout",
+		},
+	},
+	Route{
+		"/product",
+		&controllers.ProductController{},
+		[]string{
+			"get:Product",
+		},
+	},
 }
 
 func init() {

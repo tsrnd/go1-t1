@@ -2,18 +2,18 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
-	"goweb1/models"
 )
 
-type MainController struct {
+// ProductController operations for Product
+type ProductController struct {
 	beego.Controller
 }
 
-func (this *MainController) Home() {
-	this.InitFrontEndTemplate("frontend/home.tpl")
+func (this *ProductController) Product() {
+	this.InitFrontEndTemplate("frontend/product.tpl")
 }
 
-func (this *MainController) InitFrontEndTemplate(TplName string) {
+func (this *ProductController) InitFrontEndTemplate(TplName string) {
 	this.Layout = "frontend/base/layout.tpl"
 	this.TplName = TplName
 	this.LayoutSections = make(map[string]string)
