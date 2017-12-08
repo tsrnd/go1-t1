@@ -1,11 +1,11 @@
-
 package models
 
 import (
-	"github.com/astaxie/beego/orm"
-	"github.com/astaxie/beego"
-	_ "github.com/lib/pq"
 	"fmt"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/orm"
+	_ "github.com/lib/pq"
 )
 
 // Init connect dataabse with postgres

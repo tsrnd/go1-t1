@@ -19,7 +19,7 @@ var routes = Routes{
 		"/",
 		&controllers.MainController{},
 		[]string{
-			"get:Home",
+			"get:Get",
 		},
 	},
 	Route{
