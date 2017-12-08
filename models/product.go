@@ -9,55 +9,50 @@ import (
 	"github.com/astaxie/beego/orm"
 )
 
-type User struct {
-	Id       int64    `orm:"auto"`
-	Username string   `orm:"size(255)"`
-	Fullname string   `orm:"size(255)"`
-	Email    string   `orm:"size(255)"`
-	Address  string   `orm:"size(255)"`
-	Password string   `orm:"size(255)"`
-	Order    []*Order `orm:"reverse(many)"`
+type Product struct {
+	Id        int64  `orm:"auto"`
+	Name      string `orm:"size(128)"`
+	Price     int64
+	Image     string       `orm:"size(128)"`
+	Size      string       `orm:"size(128)"`
+	Color     string       `orm:"size(128)"`
+	Category  *Category    `orm:"rel(fk)"`
+	OrderItem []*OrderItem `orm:"reverse(many)"`
 }
 
 func init() {
-	orm.RegisterModel(new(User))
-}
-func (m *User) TableName() string {
-	return "users"
+	orm.RegisterModel(new(Product))
 }
 
-// AddUser insert a new User into database and returns
+func (m *Product) TableName() string {
+	return "products"
+}
+
+// AddProduct insert a new Product into database and returns
 // last inserted Id on success.
-func AddUser(m *User) (id int64, err error) {
+func AddProduct(m *Product) (id int64, err error) {
 	o := orm.NewOrm()
 	id, err = o.Insert(m)
 	return
 }
 
-func FindUser(id int) {
-	o := orm.NewOrm()
-	user := User{Id: 1}
-	err := o.Read(&user)
-	fmt.Println(user, err)
-}
-
-// GetUserById retrieves User by Id. Returns error if
+// GetProductById retrieves Product by Id. Returns error if
 // Id doesn't exist
-func GetUserById(id int64) (v *User, err error) {
+func GetProductById(id int64) (v *Product, err error) {
 	o := orm.NewOrm()
-	v = &User{Id: id}
-	if err = o.QueryTable(new(User)).Filter("Id", id).RelatedSel().One(v); err == nil {
+	v = &Product{Id: id}
+	if err = o.QueryTable(new(Product)).Filter("Id", id).RelatedSel().One(v); err == nil {
 		return v, nil
 	}
 	return nil, err
 }
 
-// GetAllUser retrieves all User matches certain condition. Returns empty list if
+// GetAllProduct retrieves all Product matches certain condition. Returns empty list if
 // no records exist
-func GetAllUser(query map[string]string, fields []string, sortby []string, order []string,
+func GetAllProduct(query map[string]string, fields []string, sortby []string, order []string,
 	offset int64, limit int64) (ml []interface{}, err error) {
 	o := orm.NewOrm()
-	qs := o.QueryTable(new(User))
+	qs := o.QueryTable(new(Product))
 	// query k=v
 	for k, v := range query {
 		// rewrite dot-notation to Object__Attribute
@@ -103,7 +98,7 @@ func GetAllUser(query map[string]string, fields []string, sortby []string, order
 		}
 	}
 
-	var l []User
+	var l []Product
 	qs = qs.OrderBy(sortFields...).RelatedSel()
 	if _, err = qs.Limit(limit, offset).All(&l, fields...); err == nil {
 		if len(fields) == 0 {
@@ -126,11 +121,11 @@ func GetAllUser(query map[string]string, fields []string, sortby []string, order
 	return nil, err
 }
 
-// UpdateUser updates User by Id and returns error if
+// UpdateProduct updates Product by Id and returns error if
 // the record to be updated doesn't exist
-func UpdateUserById(m *User) (err error) {
+func UpdateProductById(m *Product) (err error) {
 	o := orm.NewOrm()
-	v := User{Id: m.Id}
+	v := Product{Id: m.Id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {
 		var num int64
@@ -141,15 +136,15 @@ func UpdateUserById(m *User) (err error) {
 	return
 }
 
-// DeleteUser deletes User by Id and returns error if
+// DeleteProduct deletes Product by Id and returns error if
 // the record to be deleted doesn't exist
-func DeleteUser(id int64) (err error) {
+func DeleteProduct(id int64) (err error) {
 	o := orm.NewOrm()
-	v := User{Id: id}
+	v := Product{Id: id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {
 		var num int64
-		if num, err = o.Delete(&User{Id: id}); err == nil {
+		if num, err = o.Delete(&Product{Id: id}); err == nil {
 			fmt.Println("Number of records deleted in database:", num)
 		}
 	}
