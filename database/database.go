@@ -2,13 +2,13 @@ package database
 
 
 import (
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"database/sql"
+	_ "github.com/lib/pq"
 	"os"
 	"fmt"
 )
 
-func ConnectDB() *gorm.DB {
+func ConnectDB() *sql.DB {
 	dbConnect := os.Getenv("DB_CONNECTION")
 	address := fmt.Sprintf("host=%s user=%s dbname=%s port=%s sslmode=%s password=%s",
 		os.Getenv("DB_HOST"),
@@ -18,10 +18,9 @@ func ConnectDB() *gorm.DB {
 		os.Getenv("SSLMODE"),
 		os.Getenv("DB_PASSWORD"),
 	)
-	db, err := gorm.Open(dbConnect, address)
+	db, err := sql.Open(dbConnect, address)
 	if err != nil {
 		panic(err)
 	}
-	db.LogMode(true)
 	return db
 }
