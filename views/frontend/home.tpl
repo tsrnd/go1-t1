@@ -88,6 +88,7 @@
         </div>
         <div class="row">
             <div class="features-home2-slider">
+                {{ range $index, $product := .records }}
 
                 <div class="col-md-12">
                     <div class="single-product">
@@ -96,14 +97,14 @@
                         </div>
                         <div class="product-img">
                             <a href="single-product/id">
-                                <img src="/public/img/product/hinh" alt="" >
+                                <img src="/static/frontend/img/product/{{.Image}}" alt="" >
                             </a>
                         </div>
                         <div class="actions">
-                            <input class="id" type="hidden" value="id"> </input>
-                            <input class="name" type="hidden" value="ten"> </input>
-                            <input class="image" type="hidden" value="hinh"> </input>
-                            <input class="price" type="hidden" value="gia"> </input>
+                            <input class="id" type="hidden" value="{{.Id}}"> </input>
+                            <input class="name" type="hidden" value="{{.Name}}"> </input>
+                            <input class="image" type="hidden" value="{{.Image}}"> </input>
+                            <input class="price" type="hidden" value="{{.Price}}"> </input>
                             <input class="quantity" type="hidden" value="1"> </input>
                             <button type="submit" class="cart-btn" title="Add to cart">add to cart</button>
                             <ul class="add-to-link">
@@ -114,7 +115,7 @@
                         </div>
                         <div class="product-price">
                             <div class="product-name">
-                                <a href="single-product/id" title="ten">ten</a>
+                                <a href="product/{{.Id}}" title="{{.Name}}">{{.Name}}</a>
                             </div>
                             <div class="price-rating">
                                 <span>gia</span>
@@ -129,6 +130,8 @@
                         </div>
                     </div>
                 </div>
+
+                {{end}}
             </div>
         </div>
     </div>

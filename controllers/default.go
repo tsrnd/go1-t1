@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"goweb1/models"
 
 	"github.com/astaxie/beego"
@@ -12,17 +13,18 @@ type MainController struct {
 
 func (c *MainController) Get() {
 	//test model
-	models.FindUser(1)
-	c.Data["Website"] = "beego.me"
-	c.Data["Email"] = "astaxie@gmail.com"
-	c.TplName = "index.tpl"
+
+	articles, _ := models.GetAllProducts()
+	c.Data["records"] = articles
+	fmt.Println(articles)
+	InitFrontEndTemplate(&c.Controller, "frontend/home.tpl")
 }
 
 func (this *MainController) Home() {
-	this.InitFrontEndTemplate("frontend/home.tpl")
+	InitFrontEndTemplate(&this.Controller, "frontend/home.tpl")
 }
 
-func (this *MainController) InitFrontEndTemplate(TplName string) {
+func InitFrontEndTemplate(this *beego.Controller, TplName string) {
 	this.Layout = "frontend/base/layout.tpl"
 	this.TplName = TplName
 	this.LayoutSections = make(map[string]string)
