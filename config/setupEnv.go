@@ -12,6 +12,5 @@ func SetupEnv() {
 	os.Setenv("DB_CHARSET", "utf8")
 	os.Setenv("DB_PARSETIME", "True")
 	os.Setenv("SSLMODE", "disable")
-
 	os.Setenv("SERVER_PORT", ":8080")
 }
