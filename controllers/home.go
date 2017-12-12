@@ -4,14 +4,13 @@ import (
 	"goweb1/model"
 	"html/template"
 	"net/http"
-	"github.com/julienschmidt/httprouter"
 )
 
 type (
 	HomeController struct{}
 )
 
-func (hc HomeController) Home(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (hc HomeController) Home(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "session-id")
 	username := session.Values["username"]
 	product, _ := model.GetAllProduct()

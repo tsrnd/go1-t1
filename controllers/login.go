@@ -5,8 +5,8 @@ import (
 	"goweb1/model"
 	"html/template"
 	"net/http"
+
 	"github.com/gorilla/csrf"
-	"github.com/julienschmidt/httprouter"
 )
 
 type (
@@ -17,7 +17,7 @@ type Data struct {
 }
 
 // Login page
-func (ctrl LoginController) Login(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (ctrl LoginController) Login(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "session-id")
 	sessionFash, _ := store.Get(r, "session-flash")
 	context := Data{sessionFash.Flashes()}
@@ -29,11 +29,10 @@ func (ctrl LoginController) Login(w http.ResponseWriter, r *http.Request, _ http
 	username := session.Values["username"]
 	cats, _ := model.GetAllCategory()
 	ldata := map[string]interface{}{
-		"cats":    cats,
-		"name":    username,
-		"context": context,
+		"cats":           cats,
+		"name":           username,
+		"context":        context,
 		csrf.TemplateTag: csrf.TemplateField(r),
-
 	}
 	// layout file must be the first parameter in ParseFiles!
 	templates, err := template.ParseFiles(
@@ -53,13 +52,13 @@ func (ctrl LoginController) Login(w http.ResponseWriter, r *http.Request, _ http
 }
 
 // ProcessLogin process login and session
-func (ctrl LoginController) ProcessLogin(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (ctrl LoginController) ProcessLogin(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "session-id")
 	username := r.PostFormValue("username")
 	password := r.PostFormValue("password")
 
 	user, _ := model.GetUserByUserName(username)
-	v := new (Validator)
+	v := new(Validator)
 
 	if !v.ValidateUsername(username) {
 		SessionFlash(v.err, w, r)

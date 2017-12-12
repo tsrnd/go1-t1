@@ -5,16 +5,15 @@ import (
 	"html/template"
 	"net/http"
 	"strconv"
-
-	"github.com/julienschmidt/httprouter"
 )
 
 type (
 	ProductController struct{}
 )
 
-func (hc ProductController) Product(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	id := ps.ByName("id")
+func (hc ProductController) Product(w http.ResponseWriter, r *http.Request) {
+	idss := r.URL.Query()["id"]
+	id := idss[0]
 	ids, _ := strconv.ParseInt(id, 10, 64)
 
 	product, _ := model.GetProductByID(ids)

@@ -8,7 +8,6 @@ import (
 	"strconv"
 
 	"github.com/gorilla/csrf"
-	"github.com/julienschmidt/httprouter"
 )
 
 const VAT = 5
@@ -17,7 +16,7 @@ type (
 	CheckoutController struct{}
 )
 
-func (hc CheckoutController) Checkout(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (hc CheckoutController) Checkout(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "session-id")
 	username := session.Values["username"]
 	id := session.Values["id"].(uint)
@@ -50,7 +49,7 @@ func (hc CheckoutController) Checkout(w http.ResponseWriter, r *http.Request, _ 
 	}
 }
 
-func (hc CheckoutController) CheckoutPost(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+func (hc CheckoutController) CheckoutPost(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	menthod := r.FormValue("menthod")
 	address := r.FormValue("address")

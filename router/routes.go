@@ -1,12 +1,8 @@
 package router
 
 import (
-	controllers "goweb1/controllers"
-	middleware "goweb1/middleware"
+	"goweb1/controllers"
 	"net/http"
-
-	"github.com/julienschmidt/httprouter"
-	"github.com/urfave/negroni"
 )
 
 var uc controllers.UserController
@@ -18,27 +14,18 @@ var register_controller controllers.RegisterController
 var checkout_controller controllers.CheckoutController
 var url_notfound controllers.NotFoundController
 
-func Routes() *httprouter.Router {
-    r := httprouter.New()
-    r.ServeFiles("/public/*filepath", http.Dir("public"))
-    r.GET("/user/:id", uc.GetUser)
-    r.POST("/user/:id", uc.UpdateUser)
-    r.GET("/", home_controller.Home)
-    r.GET("/single-product/:id", product_controller.Product)
-    r.GET("/order", order_controller.Order)
-    r.POST("/order", order_controller.SaveOrder)
-    r.GET("/login", login_controller.Login)
-    r.GET("/register", register_controller.Register)
-    r.GET("/checkout/:id", checkout_controller.Checkout)
-    r.POST("/login", login_controller.ProcessLogin)
-    r.POST("/register", register_controller.RegisterPost)
-    r.GET("/notfound", url_notfound.NotFound)
-  	r.POST("/checkout", checkout_controller.CheckoutPost)
+func Routes() *http.ServeMux {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", home_controller.Home)
+	mux.HandleFunc("/user/:id", uc.GetUser)
+	mux.HandleFunc("/single-product/:id", product_controller.Product)
+	mux.HandleFunc("/order", order_controller.Order)
+	mux.HandleFunc("/order/save", order_controller.SaveOrder)
+	mux.HandleFunc("/login", login_controller.Login)
+	mux.HandleFunc("/register", register_controller.Register)
+	mux.HandleFunc("/logout", login_controller.LogOut)
+	mux.HandleFunc("/checkout/:id", checkout_controller.Checkout)
+	mux.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
+	return mux
 
-	nAuth := negroni.New()
-	nAuth.Use(negroni.HandlerFunc(middleware.Auth))
-	nAuth.UseHandlerFunc(login_controller.LogOut)
-	r.Handler("GET", "/logout", nAuth)
-
-	return r
 }
