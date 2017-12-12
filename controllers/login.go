@@ -1,10 +1,12 @@
 package controllers
 
 import (
+	"fmt"
 	"goweb1/messages"
 	"goweb1/model"
 	"html/template"
 	"net/http"
+
 	"github.com/gorilla/csrf"
 	"github.com/julienschmidt/httprouter"
 )
@@ -29,11 +31,10 @@ func (ctrl LoginController) Login(w http.ResponseWriter, r *http.Request, _ http
 	username := session.Values["username"]
 	cats, _ := model.GetAllCategory()
 	ldata := map[string]interface{}{
-		"cats":    cats,
-		"name":    username,
-		"context": context,
+		"cats":           cats,
+		"name":           username,
+		"context":        context,
 		csrf.TemplateTag: csrf.TemplateField(r),
-
 	}
 	// layout file must be the first parameter in ParseFiles!
 	templates, err := template.ParseFiles(
@@ -59,13 +60,14 @@ func (ctrl LoginController) ProcessLogin(w http.ResponseWriter, r *http.Request,
 	password := r.PostFormValue("password")
 
 	user, _ := model.GetUserByUserName(username)
-	v := new (Validator)
+	fmt.Println(user)
+	// v := new(Validator)
 
-	if !v.ValidateUsername(username) {
-		SessionFlash(v.err, w, r)
-		http.Redirect(w, r, URL_LOGIN, http.StatusMovedPermanently)
-		return
-	}
+	// if !v.ValidateUsername(username) {
+	// 	SessionFlash(v.err, w, r)
+	// 	http.Redirect(w, r, URL_LOGIN, http.StatusMovedPermanently)
+	// 	return
+	// }
 
 	if user.Username == "" || !CheckPasswordHash(password, user.Password) {
 		SessionFlash(messages.Error_username_or_password, w, r)
@@ -74,7 +76,7 @@ func (ctrl LoginController) ProcessLogin(w http.ResponseWriter, r *http.Request,
 	}
 
 	session.Values["username"] = user.Username
-	session.Values["id"] = user.ID
+	session.Values["id"] = user.Id
 	session.Save(r, w)
 	http.Redirect(w, r, URL_HOME, http.StatusMovedPermanently)
 }

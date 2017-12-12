@@ -1,11 +1,11 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
+	"database/sql"
 )
 
-var DB *gorm.DB
+var DB *sql.DB
 
-func SetDatabase(database *gorm.DB) {
+func SetDatabase(database *sql.DB) {
 	DB = database
 }

@@ -1,17 +1,24 @@
 package model
 
-import (
-    "github.com/jinzhu/gorm"
-)
-
 type Category struct {
-    gorm.Model
-    Name  string `gorm:"not null"`
-    Products   []Product // Category has many product
+	Id       int
+	Name     string
+	Products []Product // Category has many product
 }
 
-func GetAllCategory() (AllCategory []Category, erro error) {
-    AllCategory = []Category{}
-	erro = DB.Find(&AllCategory).Error
-    return AllCategory, erro
+func GetAllCategory() (categories []Category, err error) {
+	rows, err := DB.Query("select id, name from categories")
+	if err != nil {
+		return
+	}
+	for rows.Next() {
+		category := Category{}
+		err = rows.Scan(&category.Id, &category.Name)
+		if err != nil {
+			return
+		}
+		categories = append(categories, category)
+	}
+	rows.Close()
+	return
 }

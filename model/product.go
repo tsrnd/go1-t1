@@ -1,38 +1,44 @@
 package model
 
-import (
-    "github.com/jinzhu/gorm"
-)
-
 type Product struct {
-    gorm.Model
-    Name  string `gorm:"not null"`
-    Price  int `gorm:"not null"`
-    Image  string `gorm:"not null"`
-    Size  string `gorm:"not null"`
-	Color   string `gorm:"not null"`
-    CategoryId uint `gorm:"not null"`
-    Category Category // Product belong to Category
-    OrderItems []OrderItem // Product has many OrderItem
+	Id         int
+	Name       string
+	Price      int
+	Image      string
+	Size       string
+	Color      string
+	CategoryId uint
+	Category   Category    // Product belong to Category
+	OrderItems []OrderItem // Product has many OrderItem
 
 }
 
 func GetAllProduct() (AllProducts []Product, erro error) {
-    AllProducts = []Product{}
-	erro = DB.Find(&AllProducts).Error
-    return AllProducts, erro
+	rows, err := DB.Query("select * from products")
+	if err != nil {
+		return
+	}
+	for rows.Next() {
+		item := Product{}
+		err = rows.Scan(&item.Id, &item.Name, &item.Price, &item.Image, &item.Size, &item.Color)
+		if err != nil {
+			return
+		}
+		AllProducts = append(AllProducts, item)
+	}
+	rows.Close()
+	return
+
 }
 
-func GetProductByCategory(category_id uint, ID int64) (products []Product, erro error) {
-    products = []Product{}
-    erro = DB.Where("category_id = ?&& id != ?", category_id,ID).Find(&products).Error
-    return products, erro
-} 
+// func GetProductByCategory(category_id uint, ID int64) (products []Product, erro error) {
+// 	products = []Product{}
+// 	erro = DB.Where("category_id = ?&& id != ?", category_id, ID).Find(&products).Error
+// 	return products, erro
+// }
 
-func GetProductByID(ID int64) (product []Product, erro error) {
-    product = []Product {}
-    erro = DB.First(&product, ID).Error
-    return product, erro
-}
-
-
+// func GetProductByID(ID int64) (product []Product, erro error) {
+// 	product = []Product{}
+// 	erro = DB.First(&product, ID).Error
+// 	return product, erro
+// }

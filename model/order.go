@@ -1,33 +1,35 @@
 package model
 
-import (
-	"github.com/jinzhu/gorm"
-)
-
 type Order struct {
-	gorm.Model
-	Total      int64 `gorm:"not null"`
-	Status     int   `gorm:"not null"`
+	Id         int
+	Total      int64
+	Status     int
 	UserId     uint
 	OrderItems []OrderItem // Order hasmany OrderItem
 	Payments   []Payment
 	User       User // Order belong to User
 }
 
-func GetOrderByID(ID uint) (*Order, error) {
-	var order Order
-	erro := DB.Select("id,total,status").Where("user_id = ?", ID).Last(&order)
-	return &order, erro.Error
+func GetOrderByID(ID uint) (order Order, err error) {
+	order = Order{}
+	err = DB.QueryRow("id,total,status from posts where id = $1 order by id desc limit 1", ID).Scan(&order.Id, &order.Total, &order.Status)
+	return
 }
 
-func SaveOrder(total int64, user_id uint) (*Order, error) {
+func SaveOrder(total int64, user_id uint) (err error) {
 	order := Order{Total: total, UserId: user_id, Status: 0}
-	res := DB.Create(&order)
-	return &order, res.Error
+	statement := "insert into posts (total, user_id,status) values ($1, $2, $3)"
+	stmt, err := DB.Prepare(statement)
+	if err != nil {
+		return
+	}
+	defer stmt.Close()
+	err = stmt.QueryRow(order.Total, order.UserId, order.Status).Scan(&order.Id)
+	return
 }
 
-func GetIdOrder() (*Order, error) {
-	var orders Order
-	res := DB.Select("id").Last(&orders)
-	return &orders, res.Error
+func GetIdOrder() (order Order, err error) {
+	order = Order{}
+	err = DB.QueryRow("id,total from posts order by id desc limit 1").Scan(&order.Id)
+	return
 }

@@ -15,8 +15,8 @@ type Payment struct {
 	Orders  []Order
 }
 
-func CreatePayment(method string, status int, address string, total int64, vat int64, order_id uint64) (*Payment, error) {
-	payment := Payment{Method: method, Status: status, Address: address, Total: total, Vat: vat, OrderId: order_id}
-	res := DB.Create(&payment)
-	return &payment, res.Error
-}
+// func CreatePayment(method string, status int, address string, total int64, vat int64, order_id uint64) (*Payment, error) {
+// 	payment := Payment{Method: method, Status: status, Address: address, Total: total, Vat: vat, OrderId: order_id}
+// 	res := DB.Create(&payment)
+// 	return &payment, res.Error
+// }
