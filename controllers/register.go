@@ -2,12 +2,13 @@ package controllers
 
 import (
 	"fmt"
+	"goweb1/model"
+	"html"
 	"html/template"
 	"net/http"
-	"goweb1/model"
-	"github.com/julienschmidt/httprouter"
-	"html"
+
 	"github.com/gorilla/csrf"
+	"github.com/julienschmidt/httprouter"
 )
 
 type (
@@ -16,7 +17,7 @@ type (
 
 func (hc *RegisterController) Register(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
-	sessionFash, _ := store.Get(r, "session-flash")	
+	sessionFash, _ := store.Get(r, "session-flash")
 	message := CoverInterfaceToString(sessionFash.Flashes())
 	sessionFash.Options.MaxAge = -1
 	sessionFash.Save(r, w)
@@ -24,9 +25,9 @@ func (hc *RegisterController) Register(w http.ResponseWriter, r *http.Request, _
 	username := session.Values["username"]
 	cats, _ := model.GetAllCategory()
 	rdata := map[string]interface{}{
-		"cats": cats,
-		"name": username,
-		"sessionFlash" : message,
+		"cats":           cats,
+		"name":           username,
+		"sessionFlash":   message,
 		csrf.TemplateTag: csrf.TemplateField(r),
 	}
 	// layout file must be the first parameter in ParseFiles!
@@ -52,18 +53,25 @@ func (hc RegisterController) RegisterPost(w http.ResponseWriter, r *http.Request
 	mail := r.FormValue("mail")
 	password, _ := HashPassword(r.FormValue("password"))
 	address := html.EscapeString(r.FormValue("address"))
-	v := new (Validator)
-	if !v.ValidateUsername(username) || 
-	   !v.ValidateUsername(username) || 
-	   !v.ValidateEmail(mail) || 
-	   !v.ValidatePassword(password) || 
-	    v.ExistsEmail(mail) ||
-	    v.ExistsUserName(username) {
+	v := new(Validator)
+	if !v.ValidateUsername(username) ||
+		!v.ValidateUsername(username) ||
+		!v.ValidateEmail(mail) ||
+		!v.ValidatePassword(password) ||
+		v.ExistsEmail(mail) ||
+		v.ExistsUserName(username) {
 		SessionFlash(v.err, w, r)
 		http.Redirect(w, r, URL_REGISTER, http.StatusMovedPermanently)
 		return
 	}
-	_, err := model.Create(username, fullname, mail, address, password)
+	user := model.User{
+		Username: username,
+		Fullname: fullname,
+		Email:    mail,
+		Address:  address,
+		Password: password,
+	}
+	err := user.Create()
 	if err != nil {
 		fmt.Println(err.Error())
 		http.Redirect(w, r, URL_REGISTER, http.StatusMovedPermanently)

@@ -31,7 +31,7 @@ func GetAllOrderItems() (AllOrderItems []OrderItem, err error) {
 }
 
 func GetOrderItemByOrder(order_id int64) (orderItems OrderItem, err error) {
-	rows, err := DBCon.Query("select * from order_items where order_id = ?", order_id)
+	rows, err := DBCon.Query("select * from order_items where order_id = $1", order_id)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -21,7 +21,7 @@ func GetOrderByID(ID uint) (order Order, err error) {
 }
 
 func SaveOrder(total int64, status int64, user_id uint) (order Order, err error) {
-	err = DBCon.QueryRow("INSERT INTO orders(total,status,user_id) VALUES($1,$2,$3) returning id;", total, status, user_id).Scan(&order.ID)
+	err = DBCon.QueryRow("INSERT INTO orders (total,status,user_id) VALUES($1,$2,$3)", total, status, user_id).Scan(&order.ID)
 	if err != nil {
 		log.Fatal(err)
 	}
