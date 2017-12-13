@@ -1,9 +1,11 @@
 package controllers
 
 import (
+	"fmt"
 	"goweb1/model"
 	"html/template"
 	"net/http"
+
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -16,6 +18,7 @@ func (hc HomeController) Home(w http.ResponseWriter, r *http.Request, _ httprout
 	username := session.Values["username"]
 	product, _ := model.GetAllProduct()
 	cats, _ := model.GetAllCategory()
+	fmt.Println(product)
 	hdata := map[string]interface{}{
 		"product": product,
 		"cats":    cats,

@@ -10,7 +10,7 @@
                 <div class="location">
                     <ul>
                         <li><a href="index.html" title="go to homepage">Home<span>/</span></a>  </li>
-                        <li><strong> {{range .Product}}{{.Name}} {{end}}</strong></li>
+                        <li><strong> {{.Product.Name}}</strong></li>
                     </ul>
                 </div>
             </div>
@@ -18,7 +18,7 @@
     </div>
 </div> 
 
-{{range $key , $value := .Product}}
+
 <!-- single product area end -->
 <!-- single product details start -->
  <div class="single-product-details">
@@ -27,13 +27,13 @@
             <div class="col-sm-6">
                 <div class="single-product-img">
                     <div class="single-pro-main-image">
-                        <a href="#"><img id="optima_zoom" src="/public/img/product/{{.Image}}" data-zoom-image="img/product/{{.Image}}" alt="optima"/></a>
+                        <a href="#"><img id="optima_zoom" src="/public/img/product/{{.Product.Image}}" data-zoom-image="img/product/{{.Product.Image}}" alt="optima"/></a>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="single-product-details">
-                    <a href="#" class="product-name">{{.Name}}</a>
+                    <a href="#" class="product-name">{{.Product.Name}}</a>
                     <div class="list-product-info">
                         <div class="price-rating">
                             <div class="ratings">
@@ -51,7 +51,7 @@
                         <p>Availability:<span> In stock</span></p>
                     </div>
                     <div class="item-price">
-                        <span>{{.Price}}$</span>
+                        <span>{{.Product.Price}}$</span>
                     </div>
                     <div class="single-product-info">
                         <div class="share">
@@ -84,7 +84,7 @@
                             </label>
                             <div class="input-box">
                                 <select id="select-1">
-                                    <option value="{{.Color}}">{{.Color}}</option>
+                                    <option value="{{.Color}}">{{.Product.Color}}</option>
                                 </select>
                             </div>
                         </div>
@@ -94,7 +94,7 @@
                             </label>
                             <div class="input-box">
                                 <select id="select-2">
-                                    <option value="{{.Size}}">{{.Size}}</option>
+                                    <option value="{{.Size}}">{{.Product.Size}}</option>
                                 </select>
                             </div>
                         </div>
@@ -105,10 +105,10 @@
                                 <label>Qty: </label>
                                 <input class="cart-plus-minus-box quantity" type="text" name="qtybutton" value="0">
                             </div>
-                                <input class="id" type="hidden" value="{{.ID}}"> </input>
-                                <input class="name" type="hidden" value="{{.Name}}"> </input>
-                                <input class="image" type="hidden" value="{{.Image}}"> </input>
-                                <input class="price" type="hidden" value="{{.Price}}"> </input>
+                                <input class="id" type="hidden" value="{{.Product.ID}}"> </input>
+                                <input class="name" type="hidden" value="{{.Product.Name}}"> </input>
+                                <input class="image" type="hidden" value="{{.Product.Image}}"> </input>
+                                <input class="price" type="hidden" value="{{.Product.Price}}"> </input>
                             <button class="cart-btn">Add to cart</button>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
         </div>
     </div>
 </div> 
-{{end}}
+
 <!-- single product details end -->
 <!-- single product tab start -->
  <div class="single-product-tab-area">
@@ -278,26 +278,25 @@
         </div>
         <div class="row">
             <div class="related-slider">
-                    {{range $key , $value := .ProductRelated}}
                 
                 <div class="col-md-12">
                     <div class="single-product">
                         <div class="product-img">
-                            <a href="/single-product/{{.ID}}">
-                                <img src="/public/img/product/{{.Image}}" alt="" class="first-img">
+                            <a href="/single-product/{{.ProductRelated.ID}}">
+                                <img src="/public/img/product/{{.ProductRelated.Image}}" alt="" class="first-img">
                             </a>
                         </div>
                         <div class="product-price">
                             <div class="product-name">
-                                <a href="/single-product/{{.ID}}" title="{{.Name}}">{{.Name}}</a>
+                                <a href="/single-product/{{.ProductRelated.ID}}" title="{{.ProductRelated.Name}}">{{.ProductRelated.Name}}</a>
                             </div>
                             <div class="price-rating">
-                                <span>{{.Price}}$</span>
+                                <span>{{.ProductRelated.Price}}$</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                    {{end}}
+
                
             </div>
         </div>

@@ -1,11 +1,19 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
+	"database/sql"
+	"time"
 )
 
-var DB *gorm.DB
+type Model struct {
+	ID        uint      `schema:"id"`
+	CreatedAt time.Time `schema:"created_at"`
+	UpdatedAt time.Time `schema:"updated_at"`
+	DeletedAt time.Time `schema:"deleted_at"`
+}
 
-func SetDatabase(database *gorm.DB) {
-	DB = database
+var DBCon *sql.DB
+
+func SetDatabase(database *sql.DB) {
+	DBCon = database
 }
