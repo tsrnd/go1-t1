@@ -1,57 +1,64 @@
 package model
 
 import (
-
-    "github.com/jinzhu/gorm"
+	"log"
 )
 
 type User struct {
-    gorm.Model 
-    Username  string `gorm:"not null"`
-    Fullname  string `gorm:"not null"`
-    Email  string `gorm:"not null"`
-    Address  string `gorm:"not null"`
-    Password   string `gorm:"not null"`
-    Orders []Order
+	Model
+	Username string `schema:"username"`
+	Fullname string `schema:"fullname"`
+	Email    string `schema:"email"`
+	Address  string `schema:"address"`
+	Password string `schema:"password"`
+	Orders   []Order
 }
 
-
-func GetAll() (*User, error) {
-    var users User
-    res := DB.Find(&users)
-    return &users, res.Error
+func GetAll() (users User, err error) {
+	rows, err := DBCon.Query("SELECT * FROM users")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+	return users, err
 }
 
-func GetUserByID(ID int64) (user []User, err error) {
-    user = []User {}
-    err = DB.First(&user, ID).Error
-    return user, err
+func GetUserByID(ID int64) (user User, err error) {
+	err = DBCon.QueryRow("SELECT username, fullname, email, address, password FROM users where id = ?", ID).Scan(&user.Username, &user.Fullname, &user.Email, &user.Address, &user.Password)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return user, err
 }
 
-func GetUserByUserName(username string)  (*User, error ){
-    var user User
-    res := DB.Select("id,username, password").Where("username = ?", username).First(&user)
-    return &user, res.Error
+func GetUserByUserName(username string) (user User, err error) {
+	err = DBCon.QueryRow("SELECT username, fullname, email, address, password FROM users where id = ?", username).Scan(&user.Username, &user.Fullname, &user.Email, &user.Address, &user.Password)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return user, err
 }
 
-func GetUserByEmail(email string)  (*User, error ){
-    var user User
-    res := DB.Select("email").Where("email = ?", email).First(&user)
-    return &user, res.Error
+func GetUserByEmail(email string) (user User, err error) {
+	err = DBCon.QueryRow("SELECT email FROM users where email = ?", email).Scan(&user.Email)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return user, err
 }
 
-func Create(username string, fullname string, email string, address string, password string) (*User, error ) {
-	user := User{Username: username, Fullname: fullname, Email: email, Address: address, Password: password}
-    res := DB.Create(&user)
-    return &user, res.Error
+func Create(username string, fullname string, email string, address string, password string) (user User, err error) {
+	err = DBCon.QueryRow("INSERT INTO users(username,fullname,email,address,password) VALUES (?,?,?,?,?)", username, fullname, email, address, password).Scan(&user.ID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return user, err
 }
 
-func UpdateUser(ID int64, fullname string,  address string, password string) (*User, error) {
-    var user User
-    DB.First(&user, ID)
-    user.Fullname = fullname
-    user.Password = password
-    user.Address = address
-    res := DB.Save(&user)
-    return &user, res.Error
+func UpdateUser(ID int64, fullname string, address string, password string) (user User, err error) {
+	err = DBCon.QueryRow("UPDATE user SET fullname =  ?, password=?, address = ? WHERE  id = ?", fullname, password, address, ID).Scan(&user.ID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return user, err
 }

@@ -1,33 +1,37 @@
 package model
 
-import (
-	"github.com/jinzhu/gorm"
-)
+import "log"
 
 type Order struct {
-	gorm.Model
-	Total      int64 `gorm:"not null"`
-	Status     int   `gorm:"not null"`
+	Model
+	Total      int64 `schema:"total"`
+	Status     int   `schema:"status"`
 	UserId     uint
 	OrderItems []OrderItem // Order hasmany OrderItem
 	Payments   []Payment
 	User       User // Order belong to User
 }
 
-func GetOrderByID(ID uint) (*Order, error) {
-	var order Order
-	erro := DB.Select("id,total,status").Where("user_id = ?", ID).Last(&order)
-	return &order, erro.Error
+func GetOrderByID(ID uint) (order Order, err error) {
+	err = DBCon.QueryRow("select total, status, user_id from orders where id = $1", ID).Scan(&order.ID, &order.Total, &order.UserId)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return order, err
 }
 
-func SaveOrder(total int64, user_id uint) (*Order, error) {
-	order := Order{Total: total, UserId: user_id, Status: 0}
-	res := DB.Create(&order)
-	return &order, res.Error
+func SaveOrder(total int64, status int64, user_id uint) (order Order, err error) {
+	err = DBCon.QueryRow("INSERT INTO orders(total,status,user_id) VALUES($1,$2,$3) returning id;", total, status, user_id).Scan(&order.ID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return order, err
 }
 
-func GetIdOrder() (*Order, error) {
-	var orders Order
-	res := DB.Select("id").Last(&orders)
-	return &orders, res.Error
+func GetIdOrder() (order Order, err error) {
+	err = DBCon.QueryRow("select id from order limit 1").Scan(&order.ID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return order, err
 }

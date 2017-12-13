@@ -1,38 +1,43 @@
 package model
 
-import (
-    "github.com/jinzhu/gorm"
-)
+import "log"
 
 type Product struct {
-    gorm.Model
-    Name  string `gorm:"not null"`
-    Price  int `gorm:"not null"`
-    Image  string `gorm:"not null"`
-    Size  string `gorm:"not null"`
-	Color   string `gorm:"not null"`
-    CategoryId uint `gorm:"not null"`
-    Category Category // Product belong to Category
-    OrderItems []OrderItem // Product has many OrderItem
+	Model
+	Name       string      `schema:"name"`
+	Price      int         `schema:"price"`
+	Image      string      `schema:"image"`
+	Size       string      `schema:"size"`
+	Color      string      `schema:"color"`
+	CategoryId uint        `schema:"category_id"`
+	Category   Category    // Product belong to Category
+	OrderItems []OrderItem // Product has many OrderItem
 
 }
 
-func GetAllProduct() (AllProducts []Product, erro error) {
-    AllProducts = []Product{}
-	erro = DB.Find(&AllProducts).Error
-    return AllProducts, erro
+func GetAllProduct() (AllProducts []Product, err error) {
+	rows, err := DBCon.Query("select id, name, price, image, size,  color, category_id from products")
+	if err != nil {
+		log.Fatal(err)
+	}
+	for rows.Next() {
+		AllProduct := Product{}
+		err = rows.Scan(&AllProduct.ID, &AllProduct.Name, &AllProduct.Price, &AllProduct.Image, &AllProduct.Size, &AllProduct.Color, &AllProduct.CategoryId)
+		if err != nil {
+			return
+		}
+		AllProducts = append(AllProducts, AllProduct)
+	}
+	defer rows.Close()
+	return AllProducts, err
 }
 
-func GetProductByCategory(category_id uint, ID int64) (products []Product, erro error) {
-    products = []Product{}
-    erro = DB.Where("category_id = ?&& id != ?", category_id,ID).Find(&products).Error
-    return products, erro
-} 
-
-func GetProductByID(ID int64) (product []Product, erro error) {
-    product = []Product {}
-    erro = DB.First(&product, ID).Error
-    return product, erro
+func GetProductByCategory(category_id uint, ID int64) (products Product, err error) {
+	err = DBCon.QueryRow("select name, price, image, size,  color, category_id from products where category_id = $1 and id =$2", category_id, ID).Scan(&products.ID, &products.Name, &products.Price, &products.Image, &products.Size, &products.Color, &products.CategoryId)
+	return products, err
 }
 
-
+func GetProductByID(ID int64) (product Product, err error) {
+	err = DBCon.QueryRow("select name, price, image, size,  color, category_id  from products where  id =$1", ID).Scan(&product.Name, &product.Price, &product.Image, &product.Size, &product.Color, &product.CategoryId)
+	return product, err
+}
