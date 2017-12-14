@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 	"goweb1/model"
-	"html/template"
 	"net/http"
 	"strconv"
 
@@ -32,22 +31,7 @@ func (hc CheckoutController) Checkout(w http.ResponseWriter, r *http.Request, _ 
 		"total":          total,
 		csrf.TemplateTag: csrf.TemplateField(r),
 	}
-
-	// layout file must be the first parameter in ParseFiles!
-	templates, err := template.ParseFiles(
-		"views/layout/master.html",
-		"views/layout/header.html",
-		"views/checkout/checkout.html",
-		"views/layout/footer.html",
-	)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	if err := templates.Execute(w, cdata); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	RenderTemplate(w, "views/checkout/checkout.html", cdata)
 }
 
 func (hc CheckoutController) CheckoutPost(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {

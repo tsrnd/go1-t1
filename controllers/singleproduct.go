@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 	"goweb1/model"
-	"html/template"
 	"net/http"
 	"strconv"
 
@@ -31,19 +30,5 @@ func (hc ProductController) Product(w http.ResponseWriter, r *http.Request, ps h
 		"name":           username,
 	}
 
-	// layout file must be the first parameter in ParseFiles!
-	templates, err := template.ParseFiles(
-		"views/layout/master.html",
-		"views/layout/header.html",
-		"views/product/product.html",
-		"views/layout/footer.html",
-	)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	if err := templates.Execute(w, data); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	RenderTemplate(w, "views/product/product.html", data)
 }

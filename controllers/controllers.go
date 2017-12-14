@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 
 	"github.com/gorilla/sessions"
@@ -46,4 +47,21 @@ func CoverInterfaceToString(inter []interface{}) []string {
 func AuthIsLogin(r *http.Request) bool {
 	session, _ := store.Get(r, "session-id")
 	return session.Values["username"] != nil
+}
+
+func RenderTemplate(w http.ResponseWriter, templateFile string, templateData interface{}) {
+	templates, err := template.ParseFiles(
+		"views/layout/master.html",
+		"views/layout/header.html",
+		templateFile,
+		"views/layout/footer.html",
+	)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if err := templates.Execute(w, templateData); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
