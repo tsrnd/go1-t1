@@ -32,27 +32,28 @@ func GetUserByID(ID int64) (user User, err error) {
 }
 
 func GetUserByUserName(username string) (user User, err error) {
-	err = DBCon.QueryRow("SELECT username, fullname, email, address, password FROM users where id = ?", username).Scan(&user.Username, &user.Fullname, &user.Email, &user.Address, &user.Password)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return user, err
+	user = User{}
+	err = DBCon.QueryRow("select id,username,password from users where username = $1 order by id desc limit 1", username).Scan(&user.ID, &user.Username, &user.Password)
+	return
 }
 
 func GetUserByEmail(email string) (user User, err error) {
-	err = DBCon.QueryRow("SELECT email FROM users where email = ?", email).Scan(&user.Email)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return user, err
+	user = User{}
+	err = DBCon.QueryRow("select email from users where email = $1 order by id desc limit 1", email).Scan(&user.Email)
+	return
 }
 
-func Create(username string, fullname string, email string, address string, password string) (user User, err error) {
-	err = DBCon.QueryRow("INSERT INTO users(username,fullname,email,address,password) VALUES (?,?,?,?,?)", username, fullname, email, address, password).Scan(&user.ID)
+func CreateUser(username string, fullname string, email string, address string, password string) (err error) {
+	statement := "insert into users (username, fullname, email, address, password) values ($1, $2, $3, $4, $5) returning id"
+	stmt, err := DBCon.Prepare(statement)
 	if err != nil {
-		log.Fatal(err)
+		return
 	}
-	return user, err
+	defer stmt.Close()
+	id := 0
+	err = stmt.QueryRow(username, fullname, email, address, password).Scan(&id)
+	return
+
 }
 
 func UpdateUser(ID int64, fullname string, address string, password string) (user User, err error) {
