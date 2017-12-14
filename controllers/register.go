@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"goweb1/model"
 	"html"
-	"html/template"
 	"net/http"
 
 	"github.com/gorilla/csrf"
@@ -33,20 +32,7 @@ func (hc *RegisterController) Register(w http.ResponseWriter, r *http.Request, _
 		"sessionFlash":   message,
 		csrf.TemplateTag: csrf.TemplateField(r),
 	}
-	// layout file must be the first parameter in ParseFiles!
-	templates, err := template.ParseFiles(
-		"views/layout/master.html",
-		"views/layout/header.html",
-		"views/register/register.html",
-		"views/layout/footer.html",
-	)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	if err := templates.Execute(w, rdata); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	RenderTemplate(w, "views/register/register.html", rdata)
 }
 
 func (hc RegisterController) RegisterPost(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {

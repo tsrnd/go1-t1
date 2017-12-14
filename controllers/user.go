@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"goweb1/model"
-	"html/template"
 	"net/http"
 	"strconv"
 
@@ -38,21 +37,7 @@ func (uc UserController) GetUser(w http.ResponseWriter, r *http.Request, ps http
 		csrf.TemplateTag: csrf.TemplateField(r),
 	}
 
-	// layout file must be the first parameter in ParseFiles!
-	templates, err := template.ParseFiles(
-		"views/layout/master.html",
-		"views/layout/header.html",
-		"views/user/view.html",
-		"views/layout/footer.html",
-	)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	if err := templates.Execute(w, udata); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
+	RenderTemplate(w, "views/user/view.html", udata)
 }
 
 func (uc UserController) UpdateUser(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
