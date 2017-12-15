@@ -3,8 +3,9 @@ package redis
 import (
 	"time"
 
+	"goweb1/services/cache"
+
 	"github.com/go-redis/redis"
-	"github.com/tsrnd/go-clean-arch/services/cache"
 )
 
 // Redis struct

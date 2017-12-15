@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/tsrnd/go-clean-arch/config"
+	"goweb1/config"
 )
 
 func main() {

@@ -3,14 +3,13 @@ package config
 import (
 	"database/sql"
 
+	"goweb1/services/cache"
+	userRepo "goweb1/user/repository"
+	userCase "goweb1/user/usecase"
+
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
-	productRepo "github.com/tsrnd/go-clean-arch/product/repository"
-	productCase "github.com/tsrnd/go-clean-arch/product/usecase"
-	"github.com/tsrnd/go-clean-arch/services/cache"
-	userRepo "github.com/tsrnd/go-clean-arch/user/repository"
-	userCase "github.com/tsrnd/go-clean-arch/user/usecase"
 )
 
 // Router func

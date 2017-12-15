@@ -3,8 +3,8 @@ package psql
 import (
 	"database/sql"
 
-	"github.com/tsrnd/go-clean-arch/services/crypto"
-	model "github.com/tsrnd/go-clean-arch/user"
+	"goweb1/services/crypto"
+	model "goweb1/user"
 )
 
 type userRepository struct {

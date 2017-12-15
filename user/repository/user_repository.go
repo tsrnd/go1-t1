@@ -3,15 +3,15 @@ package repository
 import (
 	"database/sql"
 
-	"github.com/tsrnd/go-clean-arch/services/crypto"
-	model "github.com/tsrnd/go-clean-arch/user"
+	"goweb1/services/crypto"
+	model "goweb1/user"
 )
 
 // UserRepository interface
 type UserRepository interface {
 	GetByID(id int) (*model.User, error)
 	GetByEmail(email string) (*model.User, error)
-	GetPrivateDetailsByEmail(email string) (*model.PrivateUserDetails, error)
+	//GetPrivateDetailsByEmail(email string) (*model.PrivateUserDetails, error)
 	Create(email, name, password string) (int, error)
 }
 
@@ -51,21 +51,21 @@ func (m *userRepository) GetByEmail(email string) (*model.User, error) {
 	return &user, err
 }
 
-func (m *userRepository) GetPrivateUserDetailsByEmail(email string) (*model.PrivateUserDetails, error) {
-	const query = `
-    select
-      id,
-      password,
-      salt
-    from
-      users
-    where
-      email = $1
-  `
-	var u model.PrivateUserDetails
-	err := m.DB.QueryRow(query, email).Scan(&u.ID, &u.Password, &u.Salt)
-	return &u, err
-}
+// func (m *userRepository) GetPrivateUserDetailsByEmail(email string) (*model.PrivateUserDetails, error) {
+// 	const query = `
+//     select
+//       id,
+//       password,
+//       salt
+//     from
+//       users
+//     where
+//       email = $1
+//   `
+// 	var u model.PrivateUserDetails
+// 	err := m.DB.QueryRow(query, email).Scan(&u.ID, &u.Password, &u.Salt)
+// 	return &u, err
+// }
 
 func (m *userRepository) Create(email, name, password string) (int64, error) {
 	const query = `
