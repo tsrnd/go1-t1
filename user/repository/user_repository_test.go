@@ -13,7 +13,7 @@ import (
 )
 
 type FakeUserStruct struct {
-	Username string `faker:"username"`
+	UserName string `faker:"username"`
 	Email    string `faker:"email"`
 	Password string `faker:"password"`
 }
@@ -30,9 +30,9 @@ func TestGetByID(t *testing.T) {
 	}
 	defer db.Close()
 	rows := sqlmock.NewRows([]string{
-		"id", "email"}).
-		AddRow(1, userFake.Email)
-	query := "select id, email from users where id = ?"
+		"id", "email", "username"}).
+		AddRow(1, userFake.Email, userFake.UserName)
+	query := "select id, email, username from users where id = ?"
 	mock.ExpectQuery(query).WithArgs(1).WillReturnRows(rows)
 	repo := userRepo.NewUserRepository(db)
 	num := int64(1)

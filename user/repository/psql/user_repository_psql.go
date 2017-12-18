@@ -20,14 +20,15 @@ func (m *userRepository) GetByID(id int64) (*model.User, error) {
 	const query = `
     select
       id,
-      email
+      email,
+      username
     from
       users
     where
       id = $1
   `
 	var user model.User
-	err := m.DB.QueryRow(query, id).Scan(&user.ID, &user.Email)
+	err := m.DB.QueryRow(query, id).Scan(&user.ID, &user.Email, &user.UserName)
 	return &user, err
 }
 
@@ -36,14 +37,14 @@ func (m *userRepository) GetByEmail(email string) (*model.User, error) {
     select
       id,
       email,
-      name
+      username
     from
       users
     where
       email = $1
   `
 	var user model.User
-	err := m.DB.QueryRow(query, email).Scan(&user.ID, &user.Email, &user.Name)
+	err := m.DB.QueryRow(query, email).Scan(&user.ID, &user.Email, &user.UserName)
 	return &user, err
 }
 
