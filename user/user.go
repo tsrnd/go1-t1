@@ -2,9 +2,9 @@ package user
 
 // User struct
 type User struct {
-	ID    int64  `json:"id"`
-	Email string `json:"email"`
-	Name  string `json:"name"`
+	ID       int64  `json:"id"`
+	Email    string `json:"email"`
+	UserName string `json:"username"`
 }
 
 // PrivateUserDetails struct
