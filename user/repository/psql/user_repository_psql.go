@@ -84,3 +84,21 @@ func (m *userRepository) Create(email, name, password string) (int64, error) {
 	err := m.DB.QueryRow(query, email, name, hashedPassword, salt).Scan(&id)
 	return id, err
 }
+
+type fakeRepository struct {
+	DB *sql.DB
+}
+
+func (this *fakeRepository) GetByEmail(email string) (*model.User, error) {
+
+	return &model.User{ID: 1, Name: "abc"}, nil
+}
+
+func (this *fakeRepository) GetByID(id int64) (*model.User, error) {
+
+	return &model.User{ID: 1, Name: "abc"}, nil
+}
+
+func NewFakeUserRepository(Conn *sql.DB) repo.UserRepository {
+	return &fakeRepository{Conn}
+}

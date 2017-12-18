@@ -26,7 +26,7 @@ func NewUserController(r chi.Router, uc usecase.UserUsecase) *UserController {
 }
 
 func (ctrl *UserController) UserLogin(w http.ResponseWriter, r *http.Request) {
-	id := int64(10)
+	id := int64(1)
 
 	user, _ := ctrl.Usecase.GetByID(id)
 	fmt.Println(user)
