@@ -1,27 +1,50 @@
-
 package main
 
 import (
-    "net/http"
-    "goweb1/router"
-  _ "github.com/go-sql-driver/mysql"
-    "goweb1/database"
-    "goweb1/model"
-    "goweb1/config"
-    "os"
-    "github.com/gorilla/csrf"
+	"net/http"
+
+	"os"
+
+	"fr-circle-api/infrastructure"
+
+	"github.com/garyburd/redigo/redis"
+	"github.com/go-chi/chi"
 )
 
-
 func main() {
-    r := router.Routes()
-    http.ListenAndServe(os.Getenv("SERVER_PORT"), csrf.Protect([]byte("32-byte-long-auth-key"), csrf.Secure(false))(r))
+	mux := chi.NewRouter()
+
+	// sql new.
+	sqlHandler := infrastructure.NewSQL()
+	// cache new.
+	cacheHandler := infrastructure.NewCache()
+	// logger new.
+	loggerHandler := infrastructure.NewLogger()
+	// translation new.
+	translationHandler := infrastructure.NewTranslation()
+
+	r := &Router{mux: mux, sqlHandler: sqlHandler, cacheHandler: cacheHandler, loggerHandler: loggerHandler, translationHandler: translationHandler}
+
+	r.InitializeRouter()
+	r.SetupHandler()
+
+	// after process
+	defer closeLogger(r.loggerHandler.Logfile)
+	defer closeRedis(r.cacheHandler.Conn)
+
+	http.ListenAndServe(":8080", mux)
 }
 
-func init() {
-    config.SetupEnv()
-    db := database.ConnectDB()
-    model.SetDatabase(db)  
-    http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
+// after process
+func closeLogger(logfile *os.File) {
+	// close file.
+	if logfile != nil {
+		logfile.Close()
+	}
 }
-
+func closeRedis(conn *redis.Conn) {
+	// close redis connection.
+	if conn != nil {
+		(*conn).Close()
+	}
+}
