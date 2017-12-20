@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/labstack/echo"
-	"fr-circle-api/middleware"
+	"goweb1/middleware"
 
 	test "net/http/httptest"
 

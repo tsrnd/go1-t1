@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"strconv"
 
+	"goweb1/infrastructure"
+	"goweb1/shared/repository"
+
 	"github.com/garyburd/redigo/redis"
 	"github.com/jinzhu/gorm"
 	"github.com/levigross/grequests"
-	"fr-circle-api/infrastructure"
-	"fr-circle-api/shared/repository"
 )
 
 // RepositoryInterface interface.

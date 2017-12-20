@@ -3,7 +3,7 @@ package gist
 import (
 	"net/http"
 
-	"fr-circle-api/shared/handler"
+	"goweb1/shared/handler"
 )
 
 // HTTPGistHandler struct.

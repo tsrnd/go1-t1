@@ -5,7 +5,7 @@ import (
 
 	"os"
 
-	"fr-circle-api/infrastructure"
+	"goweb1/infrastructure"
 
 	"github.com/garyburd/redigo/redis"
 	"github.com/go-chi/chi"

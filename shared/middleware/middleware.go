@@ -3,7 +3,7 @@ package middleware
 import (
 	"net/http"
 
-	"fr-circle-api/infrastructure"
+	"goweb1/infrastructure"
 	"github.com/sirupsen/logrus"
 )
 

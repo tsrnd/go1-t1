@@ -28,7 +28,7 @@
    },
    "logger":{
       "output": "output",
-      "file": "/var/log/fr-circle-api/app.log",
+      "file": "/var/log/goweb1/app.log",
       "level": "debug"
    }
 }

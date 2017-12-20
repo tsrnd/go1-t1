@@ -69,5 +69,5 @@ services:
         volumes:
             # Auto import initial db
             - ./article.sql:/docker-entrypoint-initdb.d/article.sql
-            - .:/go/src/github.com/monstar-lab/fr-circle-api
+            - .:/go/src/github.com/monstar-lab/goweb1
         container_name: go-cont

@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"fr-circle-api/infrastructure"
-	"fr-circle-api/shared/handler"
+	"goweb1/infrastructure"
+	"goweb1/shared/handler"
 
 	"github.com/go-chi/chi"
 	"github.com/sirupsen/logrus"

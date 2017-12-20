@@ -3,11 +3,11 @@ package main
 import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"fr-circle-api/article"
-	"fr-circle-api/gist"
-	"fr-circle-api/infrastructure"
-	"fr-circle-api/shared/handler"
-	mMiddleware "fr-circle-api/shared/middleware"
+	"goweb1/article"
+	"goweb1/gist"
+	"goweb1/infrastructure"
+	"goweb1/shared/handler"
+	mMiddleware "goweb1/shared/middleware"
 )
 
 // Router is application struct hold mux and db connection

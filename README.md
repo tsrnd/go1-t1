@@ -1,7 +1,7 @@
-![https://github.com/monstar-lab/fr-circle-api/](https://pictr.com/images/2017/12/16/acd981ebabeb4f02458a0d96bcde53a0.jpg)
+![https://github.com/monstar-lab/goweb1/](https://pictr.com/images/2017/12/16/acd981ebabeb4f02458a0d96bcde53a0.jpg)
 
 
-# fr-circle-api sample clean architechture
+# goweb1 sample clean architechture
 
 This is an example of implementation of Clean Architecture in Go (Golang) projects.
 
@@ -28,15 +28,15 @@ The explanation about this project's structure  can read from this medium's post
 
 ```bash
 # GET WITH GO GET
-go get github.com/monstar-lab/fr-circle-api 
+go get github.com/monstar-lab/goweb1 
 
 # Go to directory
-cd $(go env GOPATH)/src/github.com/monstar-lab/fr-circle-api
+cd $(go env GOPATH)/src/github.com/monstar-lab/goweb1
 
 # Up containers
 docker-compose up --build
 
 ```
-### [>>Learn more about this docker environment](https://github.com/monstar-lab/fr-circle-api/wiki/Setting-up-the-development-environment)
+### [>>Learn more about this docker environment](https://github.com/monstar-lab/goweb1/wiki/Setting-up-the-development-environment)
 
 ### About code samples

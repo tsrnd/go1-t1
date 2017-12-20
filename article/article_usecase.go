@@ -2,7 +2,7 @@ package article
 
 import (
 	"github.com/jinzhu/gorm"
-	"fr-circle-api/shared/usecase"
+	"goweb1/shared/usecase"
 	"github.com/pkg/errors"
 )
 

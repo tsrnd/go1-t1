@@ -11,7 +11,7 @@ import (
 
 const (
 	// ConfigPath is config path directory.
-	ConfigPath = "$GOPATH/src/github.com/monstar-lab/fr-circle-api/config"
+	ConfigPath = "$GOPATH/src/github.com/monstar-lab/goweb1/config"
 	// ConfigCommonFile is common config file prefix.
 	ConfigCommonFile = "app"
 )

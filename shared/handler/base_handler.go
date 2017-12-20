@@ -12,7 +12,7 @@ import (
 	"io"
 
 	"github.com/go-playground/form"
-	"fr-circle-api/infrastructure"
+	"goweb1/infrastructure"
 	"github.com/nicksnyder/go-i18n/i18n/bundle"
 	"github.com/sirupsen/logrus"
 )
